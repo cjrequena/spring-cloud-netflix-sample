@@ -1,3 +1,38 @@
+# - https://cloud.spring.io/spring-cloud-netflix/
+# - http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# - https://github.com/spring-cloud/spring-cloud-config/blob/master/docs/src/main/asciidoc/spring-cloud-config.adoc#quick-start
+# - https://github.com/spring-cloud/spring-cloud-consul/blob/master/docs/src/main/asciidoc/spring-cloud-consul.adoc
+# - https://github.com/spring-cloud/spring-cloud-netflix/blob/master/docs/src/main/asciidoc/spring-cloud-netflix.adoc
+
+# - https://github.com/Netflix
+# - https://github.com/Netflix/ribbon/wiki
+# - https://github.com/Netflix/Hystrix/wiki
+# - https://github.com/Netflix/eureka/wiki
+# - https://github.com/Netflix/Turbine/wiki
+
+#-----------------------------------------------------------------------------------------------
+# PROFILE LOCAL
+#-----------------------------------------------------------------------------------------------
+spring:
+  profiles: local
+
+# INFO
+info:
+  service_name: ${spring.application.name}
+  maven_version: ${project.version}
+  git.dirty: ${git.dirty}
+  git.branch: ${git.branch}
+  git.tags: ${git.tags}
+  git.build.time: ${git.build.time}
+  git.build.version: ${git.build.version}
+  git.closest.tag.name: ${git.closest.tag.name}
+  git.commit.time: ${git.commit.time}
+  git.commit.id: ${git.commit.id}
+  git.commit.id.abbrev: ${git.commit.id.abbrev}
+  git.commit.user.name: ${git.commit.user.name}
+  git.commit.user.email: ${git.commit.user.email}
+  git.remote.origin.url: ${git.remote.origin.url}
+
 # ----------------------------------------
 # ACTUATOR PROPERTIES
 # ----------------------------------------
