@@ -1,0 +1,51 @@
+# ----------------------------------------
+# ACTUATOR PROPERTIES
+# ----------------------------------------
+# ENDPOINTS WEB CONFIGURATION
+management.endpoints.web.exposure.include: '*' # Endpoint IDs that should be included or '*' for all.
+management.endpoints.web.exposure.exclude:  # Endpoint IDs that should be excluded or '*' for all.
+management.endpoints.web.base-path: /management # Base path for Web endpoints. Relative to server.servlet.context-path or management.server.servlet.context-path if management.server.port is configured.
+management.endpoints.web.path-mapping.health: healthcheck
+# HEALTH ENDPOINT
+management.endpoint.health.cache.time-to-live: 0ms # Maximum time that a response can be cached.
+management.endpoint.health.enabled: true # Whether to enable the health endpoint.
+management.endpoint.health.roles:  # Roles used to determine whether or not a user is authorized to be shown details. When empty, all authenticated users are authorized.
+management.endpoint.health.show-details: always # When to show full health details.
+# INFO CONTRIBUTORS (InfoContributorProperties)
+management.info.build.enabled: true # Whether to enable build info.
+management.info.defaults.enabled: true # Whether to enable default info contributors.
+management.info.env.enabled: true # Whether to enable environment info.
+management.info.git.enabled: true # Whether to enable git info.
+management.info.git.mode: full # Mode to use to expose git information.
+
+# GIT REPOSITORY
+spring.cloud.config.server.git.uri: https://github.com/cjrequena/config-repo # The URI of the Git Repository where the configuration is stored
+#spring.cloud.config.server.git.username: gitusername
+#spring.cloud.config.server.git.password: gitpassword
+spring.cloud.config.server.bootstrap: true # Whether the Spring Cloud Config Server should configure iteslf with the loaded configuration.
+
+# CHANGE REPLICATION THROUGH KAFKA.
+#spring.cloud.bus.enabled: true
+spring.cloud.stream.kafka:
+  binders:
+    zkNodes: 127.0.0.1
+    defaultZkPort: 2181
+    brokers: 127.0.0.1
+    defaultBrokerPort: 9092
+
+# LOGGING
+logging.config: classpath:log4j2-spring.xml # Location of the logging configuration file. For instance, `classpath:logback.xml` for Logback.
+logging.file: log4j2-spring.xml # Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory.
+logging.level: # Log levels severity mapping. For instance, `logging.level.org.springframework: DEBUG`.
+  org.springframework: INFO
+  com.sample: DEBUG
+  org.I0Itec.zkclient.ZkConnection: ERROR
+
+# BANNER
+spring.banner.charset: UTF-8 # Banner file encoding.
+spring.banner.location: classpath:banner.txt # Banner file location.
+spring.banner.image.location: classpath:banner.gif # Banner image file location (jpg/png can also be used).
+spring.banner.image.width:  # Width of the banner image in chars (default 76)
+spring.banner.image.height:  # Height of the banner image in chars (default based on image height)
+spring.banner.image.margin:  # Left hand image margin in chars (default 2)
+spring.banner.image.invert:  # If images should be inverted for dark terminal themes (default false)
