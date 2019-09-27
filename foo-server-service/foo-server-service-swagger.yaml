@@ -1,0 +1,300 @@
+swagger: '2.0'
+info:
+  version: 1.0-SNAPSHOT
+  title: foo-server-service
+host: 'localhost:9080'
+basePath: /
+tags:
+  - name: Foo Entity
+    description: Foo Controller V 1
+paths:
+  /foo-service/foos:
+    get:
+      tags:
+        - Foo Entity
+      summary: Get a list of foos.
+      description: Get a list of foos.
+      operationId: retrieveUsingGET_1
+      produces:
+        - application/vnd.foo-api.v1+json
+      parameters:
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          type: string
+          allowEmptyValue: false
+        - name: filters
+          in: query
+          description: filters
+          required: false
+          type: string
+          allowEmptyValue: false
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          type: integer
+          format: int32
+          allowEmptyValue: false
+        - name: offset
+          in: query
+          description: offset
+          required: false
+          type: integer
+          format: int32
+          allowEmptyValue: false
+        - name: sort
+          in: query
+          description: sort
+          required: false
+          type: string
+          allowEmptyValue: false
+      responses:
+        '200':
+          description: OK - The request was successful and the response body contains the representation requested.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Foo'
+        '400':
+          description: Bad Request - The data given in the GET failed validation. Inspect the response body for details.
+        '401':
+          description: 'Unauthorized - The supplied credentials, if any, are not sufficient to access the resource.'
+        '404':
+          description: Not Found
+        '408':
+          description: Request Timeout
+        '429':
+          description: Too Many Requests - Your application is sending too many simultaneous requests.
+        '500':
+          description: Internal Server Error - We couldn't return the representation due to an internal server error.
+        '503':
+          description: Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again.
+      deprecated: false
+    post:
+      tags:
+        - Foo Entity
+      summary: Create a new foo.
+      description: Create a new foo.
+      operationId: createUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.foo-api.v1+json
+      parameters:
+        - in: body
+          name: foo
+          description: foo
+          required: true
+          schema:
+            $ref: '#/definitions/Foo'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Foo'
+        '201':
+          description: 'Created - The request was successful, we created a new resource and the response body contains the representation.'
+          schema:
+            $ref: '#/definitions/Foo'
+        '204':
+          description: 'No Content - The request was successful, we created a new resource and the response body does not contains the representation.'
+          schema:
+            $ref: '#/definitions/Foo'
+        '400':
+          description: Bad Request - The data given in the POST failed validation. Inspect the response body for details.
+        '401':
+          description: 'Unauthorized - The supplied credentials, if any, are not sufficient to access the resource.'
+        '408':
+          description: Request Timeout
+        '409':
+          description: Conflict - The request could not be processed because of conflict in the request
+        '429':
+          description: Too Many Requests - Your application is sending too many simultaneous requests.
+        '500':
+          description: Internal Server Error - We couldn't create the resource. Please try again.
+        '503':
+          description: 'Service Unavailable - We are temporarily unable. Please wait for a bit and try again. '
+      deprecated: false
+  '/foo-service/foos/{id}':
+    get:
+      tags:
+        - Foo Entity
+      summary: Get a foo by id.
+      description: Get a foo by id.
+      operationId: retrieveUsingGET
+      produces:
+        - application/vnd.foo-api.v1+json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK - The request was successful and the response body contains the representation requested.
+          schema:
+            $ref: '#/definitions/Foo'
+        '400':
+          description: Bad Request - The data given in the GET failed validation. Inspect the response body for details.
+        '401':
+          description: 'Unauthorized - The supplied credentials, if any, are not sufficient to access the resource.'
+        '404':
+          description: Not Found
+        '408':
+          description: Request Timeout
+        '429':
+          description: Too Many Requests - Your application is sending too many simultaneous requests.
+        '500':
+          description: Internal Server Error - We couldn't return the representation due to an internal server error.
+        '503':
+          description: Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again.
+      deprecated: false
+    put:
+      tags:
+        - Foo Entity
+      summary: Update a foo by id.
+      description: Update a foo by id.
+      operationId: updateUsingPUT
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.foo-api.v1+json
+      parameters:
+        - in: body
+          name: foo
+          description: foo
+          required: true
+          schema:
+            $ref: '#/definitions/Foo'
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'OK - The request was successful, we updated the resource and the response body contains the representation.'
+        '204':
+          description: 'No Content - The request was successful, we created a new resource and the response body does not contains the representation.'
+        '400':
+          description: Bad Request - The data given in the PUT failed validation. Inspect the response body for details.
+        '401':
+          description: 'Unauthorized - The supplied credentials, if any, are not sufficient to access the resource.'
+        '408':
+          description: Request Timeout
+        '409':
+          description: Conflict - The request could not be processed because of conflict in the request
+        '429':
+          description: Too Many Requests - Your application is sending too many simultaneous requests.
+        '500':
+          description: Internal Server Error - We couldn't create the resource. Please try again.
+        '503':
+          description: 'Service Unavailable - We are temporarily unable. Please wait for a bit and try again. '
+      deprecated: false
+    delete:
+      tags:
+        - Foo Entity
+      summary: Delete a foo by id.
+      description: Delete a foo by id.
+      operationId: deleteUsingDELETE
+      produces:
+        - application/vnd.foo-api.v1+json
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: OK - The request was successful; the resource was deleted.
+        '401':
+          description: 'Unauthorized - The supplied credentials, if any, are not sufficient to access the resource.'
+        '404':
+          description: Not Found
+        '408':
+          description: Request Timeout
+        '429':
+          description: Too Many Requests - Your application is sending too many simultaneous requests.
+        '500':
+          description: Internal Server Error - We couldn't delete the resource. Please try again.
+        '503':
+          description: Service Unavailable
+      deprecated: false
+    patch:
+      tags:
+        - Foo Entity
+      summary: Patch a foo by id.
+      description: Patch a foo by id.
+      operationId: patchUsingPATCH
+      consumes:
+        - application/json
+      produces:
+        - application/vnd.foo-api.v1+json
+      parameters:
+        - in: body
+          name: foo
+          description: foo
+          required: true
+          schema:
+            $ref: '#/definitions/Foo'
+        - name: id
+          in: path
+          description: id
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: 'OK - The request was successful, we updated the resource and the response body contains the representation.'
+        '204':
+          description: 'No Content - The request was successful, we created a new resource and the response body does not contains the representation.'
+        '400':
+          description: Bad Request - The data given in the PATCH failed validation. Inspect the response body for details.
+        '401':
+          description: 'Unauthorized - The supplied credentials, if any, are not sufficient to access the resource.'
+        '404':
+          description: Not Found
+        '408':
+          description: Request Timeout
+        '409':
+          description: Conflict - The request could not be processed because of conflict in the request
+        '429':
+          description: Too Many Requests - Your application is sending too many simultaneous requests.
+        '500':
+          description: Internal Server Error - We couldn't create the resource. Please try again.
+        '503':
+          description: 'Service Unavailable - We are temporarily unable. Please wait for a bit and try again. '
+      deprecated: false
+definitions:
+  Foo:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: id
+        readOnly: true
+      name:
+        type: string
+        description: name
+      description:
+        type: string
+        description: description
+      creation_date:
+        type: string
+        example: yyyy-MM-dd
+        description: creation_date
+        readOnly: true
+    title: Foo
+    description: FooDTOV1
