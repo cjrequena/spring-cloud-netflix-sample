@@ -4,7 +4,7 @@ package com.sample.fooserverservice.service;
 import com.sample.fooserverservice.db.OffsetLimitRequestBuilder;
 import com.sample.fooserverservice.db.entity.FooEntity;
 import com.sample.fooserverservice.db.repository.FooRepository;
-import com.sample.fooserverservice.db.rsql.JpaCustomRsqlVisitor;
+import com.sample.fooserverservice.db.rsql.CustomRsqlVisitor;
 import com.sample.fooserverservice.db.rsql.RsqlSearchOperation;
 import com.sample.fooserverservice.dto.FooDTOV1;
 import com.sample.fooserverservice.exception.EErrorCode;
@@ -132,7 +132,7 @@ public class FooServiceV1 {
 
       if (search != null) {
         Node rootNode = new RSQLParser(RsqlSearchOperation.defaultOperators()).parse(search);
-        specification = rootNode.accept(new JpaCustomRsqlVisitor<>());
+        specification = rootNode.accept(new CustomRsqlVisitor<>());
         page = this.fooRepository.findAll(specification, pageable);
       } else {
         page = this.fooRepository.findAll(pageable);

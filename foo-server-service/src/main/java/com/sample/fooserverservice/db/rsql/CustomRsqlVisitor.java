@@ -14,12 +14,12 @@ import org.springframework.data.jpa.domain.Specification;
  * @see
  *
  */
-public class JpaCustomRsqlVisitor<T> implements RSQLVisitor<Specification<T>, Void> {
+public class CustomRsqlVisitor<T> implements RSQLVisitor<Specification<T>, Void> {
 
-    private JpaGenericRsqlSpecBuilder<T> builder;
+    private GenericRsqlSpecBuilder<T> builder;
 
-    public JpaCustomRsqlVisitor() {
-        builder = new JpaGenericRsqlSpecBuilder<>();
+    public CustomRsqlVisitor() {
+        builder = new GenericRsqlSpecBuilder<>();
     }
 
     @Override

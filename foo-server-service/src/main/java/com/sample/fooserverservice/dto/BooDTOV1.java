@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * <p>
@@ -36,15 +35,15 @@ import java.util.List;
   "description",
   "creationDate"
 })
-@JsonTypeName("foo")
-@ApiModel(value = "Foo", description = "FooDTOV1")
+@JsonTypeName("boo")
+@ApiModel(value = "Boo", description = "BooDTOV1")
 @XmlRootElement
-public class FooDTOV1 extends DTO implements Serializable {
+public class BooDTOV1 extends DTO implements Serializable {
 
   //@NotNull(message = "id is required field")
   @JsonProperty(value = "id")
   @Getter(onMethod = @__({@JsonProperty("id")}))
-  @ApiModelProperty(value = "id", position = 1)
+  @ApiModelProperty(value = "id", position = 1, readOnly = true)
   private Long id;
 
   @NotNull(message = "name is a required field")
@@ -62,13 +61,9 @@ public class FooDTOV1 extends DTO implements Serializable {
   //@NotNull(message = "Creation Date is a required field")
   @JsonProperty(value = "creation_date")
   @Getter(onMethod = @__({@JsonProperty("creation_date")}))
-  @ApiModelProperty(example = "yyyy-MM-dd", value = "creation_date",  position = 4)
+  @ApiModelProperty(example = "yyyy-MM-dd", value = "creation_date", readOnly = true, position = 4)
   @JsonDeserialize(using = LocalDateDeserializer.class)
   @JsonSerialize(using = LocalDateSerializer.class)
   private LocalDate creationDate;
 
-  @JsonProperty(value = "booes")
-  @Getter(onMethod = @__({@JsonProperty("booes")}))
-  @ApiModelProperty(value = "booes",  position = 5)
-  private List<BooDTOV1> booes;
 }

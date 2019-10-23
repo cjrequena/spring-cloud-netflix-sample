@@ -17,7 +17,7 @@ import java.util.List;
  * @see
  *
  */
-public class JpaGenericRsqlSpecBuilder<T> {
+public class GenericRsqlSpecBuilder<T> {
 
     /**
      *
@@ -70,7 +70,8 @@ public class JpaGenericRsqlSpecBuilder<T> {
      * @return
      */
     public Specification<T> createSpecification(final ComparisonNode comparisonNode) {
-        return Specification.where(new JpaGenericRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
+        //return Specification.where(new JpaGenericRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
+        return Specification.where(new GenericRsqlSpecification<>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments()));
     }
 
 }

@@ -15,6 +15,11 @@
         <start-class>com.sample.fooserverservice.ServerServiceApplication</start-class>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>eu.jasPe</groupId>
+            <artifactId>jaspe</artifactId>
+            <version>${jaspe.version}</version>
+        </dependency>
         <!-- spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
