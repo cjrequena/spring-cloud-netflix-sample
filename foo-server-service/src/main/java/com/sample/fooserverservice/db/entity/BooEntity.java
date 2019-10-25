@@ -50,7 +50,7 @@ public class BooEntity {
   private LocalDate creationDate;
 
   @ManyToOne
-  @JoinColumn(name="foo_id", nullable=false)
+  @JoinColumn(name = "foo_id", nullable = false)
   private FooEntity foo;
 
 }

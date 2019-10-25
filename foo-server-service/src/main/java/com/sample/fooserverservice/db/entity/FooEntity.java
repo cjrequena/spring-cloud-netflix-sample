@@ -52,7 +52,7 @@ public class FooEntity {
   @Convert(converter = LocalDateConverter.class)
   private LocalDate creationDate;
 
-  @OneToMany (targetEntity = BooEntity.class, mappedBy = "foo", cascade = CascadeType.ALL)
+  @OneToMany(targetEntity = BooEntity.class, mappedBy = "foo", cascade = CascadeType.ALL)
   private List<BooEntity> booes;
 
 }

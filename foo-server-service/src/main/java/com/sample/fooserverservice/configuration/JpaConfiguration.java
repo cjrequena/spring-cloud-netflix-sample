@@ -2,7 +2,6 @@ package com.sample.fooserverservice.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -26,11 +25,11 @@ import javax.sql.DataSource;
  */
 @Configuration
 @EnableJpaRepositories(
-  entityManagerFactoryRef="entityManagerFactory",
-  transactionManagerRef="transactionManager",
+  entityManagerFactoryRef = "entityManagerFactory",
+  transactionManagerRef = "transactionManager",
   basePackages = {"com.sample.fooserverservice.db.repository"
 
-})
+  })
 @EnableTransactionManagement
 public class JpaConfiguration {
 

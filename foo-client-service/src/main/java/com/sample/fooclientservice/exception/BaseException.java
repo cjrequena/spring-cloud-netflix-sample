@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.exception;
+package com.sample.fooclientservice.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

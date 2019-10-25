@@ -1,6 +1,5 @@
 package com.sample.fooserverservice.service;
 
-
 import com.sample.fooserverservice.db.OffsetLimitRequestBuilder;
 import com.sample.fooserverservice.db.entity.FooEntity;
 import com.sample.fooserverservice.db.repository.FooRepository;

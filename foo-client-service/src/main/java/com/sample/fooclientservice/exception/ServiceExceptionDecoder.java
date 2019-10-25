@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.exception;
+package com.sample.fooclientservice.exception;
 
 import feign.Response;
 import feign.codec.ErrorDecoder;

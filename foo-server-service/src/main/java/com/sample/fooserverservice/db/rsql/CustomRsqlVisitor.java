@@ -16,25 +16,25 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public class CustomRsqlVisitor<T> implements RSQLVisitor<Specification<T>, Void> {
 
-    private GenericRsqlSpecBuilder<T> builder;
+  private GenericRsqlSpecBuilder<T> builder;
 
-    public CustomRsqlVisitor() {
-        builder = new GenericRsqlSpecBuilder<>();
-    }
+  public CustomRsqlVisitor() {
+    builder = new GenericRsqlSpecBuilder<>();
+  }
 
-    @Override
-    public Specification<T> visit(final AndNode node, final Void param) {
-        return builder.createSpecification(node);
-    }
+  @Override
+  public Specification<T> visit(final AndNode node, final Void param) {
+    return builder.createSpecification(node);
+  }
 
-    @Override
-    public Specification<T> visit(final OrNode node, final Void param) {
-        return builder.createSpecification(node);
-    }
+  @Override
+  public Specification<T> visit(final OrNode node, final Void param) {
+    return builder.createSpecification(node);
+  }
 
-    @Override
-    public Specification<T> visit(final ComparisonNode node, final Void params) {
-        return builder.createSpecification(node);
-    }
+  @Override
+  public Specification<T> visit(final ComparisonNode node, final Void params) {
+    return builder.createSpecification(node);
+  }
 
 }

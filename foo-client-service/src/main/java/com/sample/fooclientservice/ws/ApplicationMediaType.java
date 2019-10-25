@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.ws;
+package com.sample.fooclientservice.ws;
 
 import org.springframework.http.MediaType;
 

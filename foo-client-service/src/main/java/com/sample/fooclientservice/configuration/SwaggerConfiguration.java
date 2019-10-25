@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.configuration;
+package com.sample.fooclientservice.configuration;
 
 import com.fasterxml.classmate.TypeResolver;
 import io.swagger.annotations.Api;
@@ -48,7 +48,7 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 @Configuration
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
-@ComponentScan(basePackages = {"com.sample.fooserverservice.ws.controller"})
+@ComponentScan(basePackages = {"com.sample.fooclientservice.ws.controller"})
 public class SwaggerConfiguration {
 
   /** The type resolver. */

@@ -1,8 +1,6 @@
 package com.sample.fooserverservice.ws.controller;
 
-
 import com.sample.fooserverservice.dto.FooDTOV1;
-import com.sample.fooserverservice.exception.ControllerException;
 import com.sample.fooserverservice.exception.EErrorCode;
 import com.sample.fooserverservice.exception.ServiceException;
 import com.sample.fooserverservice.service.FooServiceV1;
@@ -47,12 +45,12 @@ import java.util.List;
  */
 @Log4j2
 @RestController
-@RequestMapping(value = "/foo-service")
+@RequestMapping(value = "/foo-server-service")
 @Api(
   value = "Foo Entity",
   tags = {"Foo Entity"}
 )
-public class FooControllerV1 implements IBaseController {
+public class FooControllerV1 {
 
   public static final String CACHE_CONTROL = "Cache-Control";
 
@@ -86,7 +84,7 @@ public class FooControllerV1 implements IBaseController {
     }
   )
   @PostMapping(
-    path = "/foos",
+    path = "/fooes",
     produces = {
       ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
     }
@@ -96,23 +94,19 @@ public class FooControllerV1 implements IBaseController {
     HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
     try {
-      // Validate request body dto
-      validateRequestBody(bindingResult);
       //
       dto = fooServiceV1.create(dto);
       // Headers
       HttpHeaders headers = new HttpHeaders();
       headers.set(CACHE_CONTROL, "no store, private, max-age=0");
       headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{id}").toString())
-              .buildAndExpand(dto.getId())
-              .toUri());
+        .buildAndExpand(dto.getId())
+        .toUri());
       //
       return new ResponseEntity<>(headers, HttpStatus.CREATED);
     } catch (ServiceException ex) {
       log.error("{}", ex.getMessage(), ex);
       throw ex;
-    } catch (ControllerException ex) { //NOSONAR
-      throw new ServiceException(ex.getErrorCode(), ex.getMessage());
     }
     //---
   }
@@ -141,7 +135,7 @@ public class FooControllerV1 implements IBaseController {
     }
   )
   @GetMapping(
-    path = "/foos/{id}",
+    path = "/fooes/{id}",
     produces = {
       ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
     }
@@ -189,7 +183,7 @@ public class FooControllerV1 implements IBaseController {
     }
   )
   @GetMapping(
-    path = "/foos",
+    path = "/fooes",
     produces = {
       ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
     }
@@ -204,9 +198,9 @@ public class FooControllerV1 implements IBaseController {
     //--
     try {
 
-      log.debug("fieldsQueryParam: {} ", fieldsQueryParam);
-      log.debug("searchQueryParam: {} ", searchQueryParam);
-      log.debug("sortQueryParam: {} ", sortQueryParam);
+      log.debug("fields: {} ", fieldsQueryParam);
+      log.debug("filters: {} ", searchQueryParam);
+      log.debug("sort: {} ", sortQueryParam);
       log.debug("offset: {} ", offset);
       log.debug("limit: {} ", limit);
 
@@ -259,7 +253,7 @@ public class FooControllerV1 implements IBaseController {
     }
   )
   @PutMapping(
-    path = "/foos/{id}",
+    path = "/fooes/{id}",
     produces = {
       ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
     }
@@ -270,8 +264,6 @@ public class FooControllerV1 implements IBaseController {
     BindingResult bindingResult) throws ServiceException {
     //--
     try {
-      // Validate request body dto
-      validateRequestBody(bindingResult);
       //
       this.fooServiceV1.update(id, dto);
       //Headers
@@ -281,8 +273,6 @@ public class FooControllerV1 implements IBaseController {
     } catch (ServiceException ex) {
       log.error("{}", ex.getMessage(), ex);
       throw ex;
-    } catch (ControllerException ex) {//NOSONAR
-      throw new ServiceException(ex.getErrorCode(), ex.getMessage());
     }
     //---
   }
@@ -316,7 +306,7 @@ public class FooControllerV1 implements IBaseController {
     }
   )
   @PatchMapping(
-    path = "/foos/{id}",
+    path = "/fooes/{id}",
     produces = {
       ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
     }
@@ -328,19 +318,16 @@ public class FooControllerV1 implements IBaseController {
     UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
     try {
-      // Validate request body dto
-      validateRequestBody(bindingResult);
+
       //
       this.fooServiceV1.patch(id, dto);
       //Headers
       HttpHeaders responseHeaders = new HttpHeaders();
-      responseHeaders.setLocation(ucBuilder.path("/foos/{id}").buildAndExpand(id).toUri());
+      responseHeaders.setLocation(ucBuilder.path("/fooes/{id}").buildAndExpand(id).toUri());
       return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
     } catch (ServiceException ex) {
       log.error("Error patching: {}", ex.getMessage(), ex);
       throw ex;
-    } catch (ControllerException ex) {//NOSONAR
-      throw new ServiceException(ex.getErrorCode(), ex.getMessage());
     }
     //---
   }
@@ -368,7 +355,7 @@ public class FooControllerV1 implements IBaseController {
     }
   )
   @DeleteMapping(
-    path = "/foos/{id}",
+    path = "/fooes/{id}",
     produces = {
       ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
     }

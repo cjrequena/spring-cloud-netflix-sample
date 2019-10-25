@@ -1,6 +1,5 @@
 package com.sample.fooserverservice.mapper;
 
-
 import com.sample.fooserverservice.db.entity.FooEntity;
 import com.sample.fooserverservice.dto.FooDTOV1;
 import org.mapstruct.Mapper;

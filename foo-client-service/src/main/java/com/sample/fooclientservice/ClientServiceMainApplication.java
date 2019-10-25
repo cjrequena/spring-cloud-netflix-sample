@@ -1,6 +1,5 @@
-package com.sample.fooserverservice;
+package com.sample.fooclientservice;
 
-import eu.jaspe.jaspe.annotation.EnableJaspe;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,9 +14,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableCircuitBreaker
 @EnableAutoConfiguration
-@EnableJaspe
-public class ServerServiceApplication {
+//@EnableJaspe
+public class ClientServiceMainApplication {
   public static void main(String[] args) {
-    SpringApplication.run(ServerServiceApplication.class, args);
+    SpringApplication.run(ClientServiceMainApplication.class, args);
   }
 }

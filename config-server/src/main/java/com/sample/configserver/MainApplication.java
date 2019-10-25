@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 @EnableConfigServer
 public class MainApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(MainApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(MainApplication.class, args);
+  }
 }

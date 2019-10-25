@@ -1,12 +1,12 @@
-package com.sample.fooserverservice.dto;
+package com.sample.fooclientservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sample.fooserverservice.dto.serializer.LocalDateDeserializer;
-import com.sample.fooserverservice.dto.serializer.LocalDateSerializer;
+import com.sample.fooclientservice.dto.serializer.LocalDateDeserializer;
+import com.sample.fooclientservice.dto.serializer.LocalDateSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

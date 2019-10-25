@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.exception;
+package com.sample.fooclientservice.exception;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,5 @@
 package com.sample.fooserverservice.ws.controller;
 
-
 import com.sample.fooserverservice.exception.ControllerException;
 import com.sample.fooserverservice.exception.EErrorCode;
 import org.springframework.validation.BindingResult;
