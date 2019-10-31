@@ -4,7 +4,6 @@ import com.sample.fooserverservice.dto.FooDTOV1;
 import com.sample.fooserverservice.exception.EErrorCode;
 import com.sample.fooserverservice.exception.ServiceException;
 import com.sample.fooserverservice.service.FooServiceV1;
-import com.sample.fooserverservice.ws.ApplicationMediaType;
 import cz.jirutka.rsql.parser.RSQLParserException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -86,10 +86,10 @@ public class FooControllerV1 {
   @PostMapping(
     path = "/fooes",
     produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
+      MediaType.APPLICATION_JSON_VALUE
     }
   )
-  public ResponseEntity<FooDTOV1> create(
+  public ResponseEntity<Void> create(
     @ApiParam(value = "foo", name = "foo", required = true) @Valid @RequestBody FooDTOV1 dto, BindingResult bindingResult,
     HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
@@ -107,6 +107,9 @@ public class FooControllerV1 {
     } catch (ServiceException ex) {
       log.error("{}", ex.getMessage(), ex);
       throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
+      throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
     }
     //---
   }
@@ -137,7 +140,7 @@ public class FooControllerV1 {
   @GetMapping(
     path = "/fooes/{id}",
     produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
+      MediaType.APPLICATION_JSON_VALUE
     }
   )
   public ResponseEntity<FooDTOV1> retrieve(
@@ -185,8 +188,9 @@ public class FooControllerV1 {
   @GetMapping(
     path = "/fooes",
     produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-    }
+      MediaType.APPLICATION_JSON_VALUE
+    },
+    headers = "Accept-Version=vnd.foo-service.v1"
   )
   public ResponseEntity<List<FooDTOV1>> retrieve(
     @ApiParam(value = "fields") @RequestParam(value = "fields", required = false) String fieldsQueryParam,
@@ -255,7 +259,7 @@ public class FooControllerV1 {
   @PutMapping(
     path = "/fooes/{id}",
     produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
+      MediaType.APPLICATION_JSON_VALUE
     }
   )
   public ResponseEntity<Void> update(
@@ -308,7 +312,7 @@ public class FooControllerV1 {
   @PatchMapping(
     path = "/fooes/{id}",
     produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
+      MediaType.APPLICATION_JSON_VALUE
     }
   )
   public ResponseEntity<Void> patch(
@@ -356,9 +360,8 @@ public class FooControllerV1 {
   )
   @DeleteMapping(
     path = "/fooes/{id}",
-    produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-    }
+    produces = {MediaType.APPLICATION_JSON_VALUE},
+    headers = "Accept-Version=vnd.foo-service.v1"
   )
   public ResponseEntity<Void> delete(@ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
     //--

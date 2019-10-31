@@ -4,7 +4,6 @@ import com.sample.fooclientservice.dto.FooDTOV1;
 import com.sample.fooclientservice.exception.EErrorCode;
 import com.sample.fooclientservice.exception.ServiceException;
 import com.sample.fooclientservice.service.FooServiceV1;
-import com.sample.fooclientservice.ws.ApplicationMediaType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -12,12 +11,19 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -43,60 +49,54 @@ public class FooControllerV1 {
   @Autowired
   private FooServiceV1 fooServiceV1;
 
-  //  /**
-  //   * Create a new foo.
-  //   *
-  //   * @param dto {@link FooDTOV1}
-  //   * @param bindingResult {@link BindingResult}
-  //   * @return ResponseEntity {@link ResponseEntity}
-  //   * @throws ServiceException {@link ServiceException}
-  //   */
-  //  @ApiOperation(
-  //    tags = "Foo Entity",
-  //    value = "Create a new foo.",
-  //    notes = "Create a new foo."
-  //  )
-  //  @ApiResponses(
-  //    value = {
-  //      @ApiResponse(code = 201, message = "Created - The request was successful, we created a new resource and the response body contains the representation."),
-  //      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
-  //      @ApiResponse(code = 400, message = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
-  //      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-  //      @ApiResponse(code = 408, message = "Request Timeout"),
-  //      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
-  //      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-  //      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
-  //      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
-  //    }
-  //  )
-  //  @PostMapping(
-  //    path = "/foos",
-  //    produces = {
-  //      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-  //    }
-  //  )
-  //  public ResponseEntity<FooDTOV1> create(
-  //    @ApiParam(value = "foo", name = "foo", required = true) @Valid @RequestBody FooDTOV1 dto, BindingResult bindingResult,
-  //    HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
-  //    //--
-  //    try {
-  //      dto = fooServiceV1.create(dto);
-  //      // Headers
-  //      HttpHeaders headers = new HttpHeaders();
-  //      headers.set(CACHE_CONTROL, "no store, private, max-age=0");
-  //      headers.setLocation(ucBuilder.path(new StringBuilder().append(request.getServletPath()).append("/{id}").toString())
-  //              .buildAndExpand(dto.getId())
-  //              .toUri());
-  //
-  //      return new ResponseEntity<>(headers, HttpStatus.CREATED);
-  //    } catch (ServiceException ex) {
-  //      log.error("{}", ex.getMessage(), ex);
-  //      throw ex;
-  //    } catch (ControllerException ex) { //NOSONAR
-  //      throw new ServiceException(ex.getErrorCode(), ex.getMessage());
-  //    }
-  //    //---
-  //  }
+  /**
+   * Create a new foo.
+   *
+   * @param dto {@link FooDTOV1}
+   * @param bindingResult {@link BindingResult}
+   * @return ResponseEntity {@link ResponseEntity}
+   * @throws ServiceException {@link ServiceException}
+   */
+  @ApiOperation(
+    tags = "Foo Entity",
+    value = "Create a new foo.",
+    notes = "Create a new foo."
+  )
+  @ApiResponses(
+    value = {
+      @ApiResponse(code = 201, message = "Created - The request was successful, we created a new resource and the response body contains the representation."),
+      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(code = 400, message = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
+      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(code = 408, message = "Request Timeout"),
+      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
+      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
+      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
+    }
+  )
+  @PostMapping(
+    path = "/fooes",
+    produces = {
+      MediaType.APPLICATION_JSON_VALUE
+    },
+    headers = "Accept-Version=vnd.foo-service.v1"
+  )
+  public ResponseEntity<Void> create(
+    @ApiParam(value = "foo", name = "foo", required = true) @Valid @RequestBody FooDTOV1 dto, BindingResult bindingResult,
+    HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
+    //--
+    try {
+      return fooServiceV1.create(dto);
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage(), ex);
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage(), ex);
+      throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
+    }
+    //---
+  }
 
   //  /**
   //   * Get a foo by id.
@@ -155,8 +155,8 @@ public class FooControllerV1 {
    */
   @ApiOperation(
     tags = "Foo Entity",
-    value = "Get a list of foos.",
-    notes = "Get a list of foos.",
+    value = "Get a list of fooes.",
+    notes = "Get a list of fooes.",
     responseContainer = "List"
   )
   @ApiResponses(
@@ -172,10 +172,11 @@ public class FooControllerV1 {
     }
   )
   @GetMapping(
-    path = "/foos",
+    path = "/fooes",
     produces = {
-      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-    }
+      MediaType.APPLICATION_JSON_VALUE
+    },
+    headers = "Accept-Version=vnd.foo-service.v1"
   )
   public ResponseEntity<List<FooDTOV1>> retrieve(
     @ApiParam(value = "fields") @RequestParam(value = "fields", required = false) String fields,
@@ -193,9 +194,8 @@ public class FooControllerV1 {
       log.debug("offset: {} ", offset);
       log.debug("limit: {} ", limit);
 
-      ResponseEntity<List<FooDTOV1>> responseEntity = this.fooServiceV1.retrieve(fields, filters, sort, offset, limit);
+      return this.fooServiceV1.retrieve(fields, filters, sort, offset, limit);
 
-      return new ResponseEntity<>(responseEntity.getBody(), responseEntity.getHeaders(), responseEntity.getStatusCode());
     } catch (ServiceException ex) {
       log.error("{}", ex.getMessage(), ex);
       throw ex;

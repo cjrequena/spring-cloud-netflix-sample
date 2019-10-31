@@ -31,11 +31,6 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfiguration {
 
-  private enum ConexionType {
-    POSTGRES,
-    HSQL
-  }
-
   private ConexionType conexionType;
 
   @Profile("!integration-test")
@@ -74,5 +69,10 @@ public class DataSourceConfiguration {
     Flyway flyway = new Flyway(configuration);
     flyway.migrate();
     return flyway;
+  }
+
+  private enum ConexionType {
+    POSTGRES,
+    HSQL
   }
 }

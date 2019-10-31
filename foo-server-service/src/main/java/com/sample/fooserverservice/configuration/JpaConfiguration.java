@@ -27,9 +27,8 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
   entityManagerFactoryRef = "entityManagerFactory",
   transactionManagerRef = "transactionManager",
-  basePackages = {"com.sample.fooserverservice.db.repository"
-
-  })
+  basePackages = {"com.sample.fooserverservice.db.repository"}
+)
 @EnableTransactionManagement
 public class JpaConfiguration {
 
