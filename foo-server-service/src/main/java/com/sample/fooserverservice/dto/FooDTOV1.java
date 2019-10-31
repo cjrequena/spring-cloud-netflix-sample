@@ -44,7 +44,7 @@ public class FooDTOV1 extends DTO implements Serializable {
   //@NotNull(message = "id is required field")
   @JsonProperty(value = "id")
   @Getter(onMethod = @__({@JsonProperty("id")}))
-  @ApiModelProperty(value = "id", position = 1)
+  @ApiModelProperty(value = "id", position = 1, readOnly = true)
   private Long id;
 
   @NotNull(message = "name is a required field")

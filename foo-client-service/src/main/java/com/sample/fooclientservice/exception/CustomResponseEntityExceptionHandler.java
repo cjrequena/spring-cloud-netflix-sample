@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
  * @author cjrequena
  * @since JDK1.8
  */
-
 @ControllerAdvice
 @Log4j2
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
