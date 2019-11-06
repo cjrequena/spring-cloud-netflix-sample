@@ -39,7 +39,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
   public ResponseEntity<Object> serviceException(ServiceException ex) {
     ResponseEntity responseEntity;
     ErrorDTO errorDTO = new ErrorDTO();
-    errorDTO.setStatus(ex.getStatus().value());
     errorDTO.setErrorCode(ex.getErrorCode());
     errorDTO.setMessage(ex.getMessage());
     errorDTO.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));

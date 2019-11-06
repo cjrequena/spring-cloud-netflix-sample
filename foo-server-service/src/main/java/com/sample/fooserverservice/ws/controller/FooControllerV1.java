@@ -105,10 +105,10 @@ public class FooControllerV1 {
       //
       return new ResponseEntity<>(headers, HttpStatus.CREATED);
     } catch (ServiceException ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw ex;
     } catch (Exception ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
     }
     //---
@@ -153,7 +153,7 @@ public class FooControllerV1 {
       FooDTOV1 dtoRS = this.fooServiceV1.retrieve(id);
       return new ResponseEntity<>(dtoRS, responseHeaders, HttpStatus.OK);
     } catch (ServiceException ex) {
-      log.error("{}: {}", ex.getErrorCode(), ex.getMessage(), ex);
+      //log.error("{}: {}", ex.getErrorCode(), ex.getMessage(), ex);
       throw ex;
     }
     //---
@@ -217,13 +217,13 @@ public class FooControllerV1 {
       responseHeaders.set("Number-Of-Elements", String.valueOf(page.getNumberOfElements())); // Total elements in the payload.
       return new ResponseEntity<>(page.getContent(), responseHeaders, HttpStatus.OK);
     } catch (RSQLParserException ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
     } catch (ServiceException ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw ex;
     } catch (Exception ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
     }
     //--
@@ -275,7 +275,7 @@ public class FooControllerV1 {
       responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
       return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
     } catch (ServiceException ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw ex;
     }
     //---
@@ -330,7 +330,7 @@ public class FooControllerV1 {
       responseHeaders.setLocation(ucBuilder.path("/fooes/{id}").buildAndExpand(id).toUri());
       return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
     } catch (ServiceException ex) {
-      log.error("Error patching: {}", ex.getMessage(), ex);
+      //log.error("Error patching: {}", ex.getMessage(), ex);
       throw ex;
     }
     //---
@@ -375,7 +375,7 @@ public class FooControllerV1 {
       return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
 
     } catch (ServiceException ex) {
-      log.error("{}", ex.getMessage(), ex);
+      //log.error("{}", ex.getMessage(), ex);
       throw ex;
     }
     //---
