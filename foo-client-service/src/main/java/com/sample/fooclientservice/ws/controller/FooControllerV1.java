@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -209,59 +210,58 @@ public class FooControllerV1 {
     //--
   }
 
-  //  /**
-  //   * Update a foo by id.
-  //   *
-  //   * @param id {@link Integer}
-  //   * @param dto {@link FooDTOV1}
-  //   * @param bindingResult {@link BindingResult}
-  //   * @return Void {@link Void}
-  //   * @throws ServiceException {@link ServiceException}
-  //   */
-  //  @ApiOperation(
-  //    tags = "Foo Entity",
-  //    value = "Update a foo by id.",
-  //    notes = "Update a foo by id."
-  //  )
-  //  @ApiResponses(
-  //    value = {
-  //      @ApiResponse(code = 200, message = "OK - The request was successful, we updated the resource and the response body contains the representation."),
-  //      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
-  //      @ApiResponse(code = 400, message = "Bad Request - The data given in the PUT failed validation. Inspect the response body for details."),
-  //      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-  //      @ApiResponse(code = 408, message = "Request Timeout"),
-  //      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
-  //      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-  //      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
-  //      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
-  //    }
-  //  )
-  //  @PutMapping(
-  //    path = "/foos/{id}",
-  //    produces = {
-  //      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-  //    }
-  //  )
-  //  public ResponseEntity<Void> update(
-  //    @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
-  //    @ApiParam(value = "foo", name = "foo", required = true) @Valid @RequestBody FooDTOV1 dto,
-  //    BindingResult bindingResult) throws ServiceException {
-  //    //--
-  //    try {
-  //      //
-  //      this.fooServiceV1.update(id, dto);
-  //      //Headers
-  //      HttpHeaders responseHeaders = new HttpHeaders();
-  //      responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
-  //      return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
-  //    } catch (ServiceException ex) {
-  //      log.error("{}", ex.getMessage(), ex);
-  //      throw ex;
-  //    } catch (ControllerException ex) {//NOSONAR
-  //      throw new ServiceException(ex.getErrorCode(), ex.getMessage());
-  //    }
-  //    //---
-  //  }
+    /**
+     * Update a foo by id.
+     *
+     * @param id {@link Integer}
+     * @param dto {@link FooDTOV1}
+     * @param bindingResult {@link BindingResult}
+     * @return Void {@link Void}
+     * @throws ServiceException {@link ServiceException}
+     */
+    @ApiOperation(
+      tags = "Foo Entity",
+      value = "Update a foo by id.",
+      notes = "Update a foo by id."
+    )
+    @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "OK - The request was successful, we updated the resource and the response body contains the representation."),
+        @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+        @ApiResponse(code = 400, message = "Bad Request - The data given in the PUT failed validation. Inspect the response body for details."),
+        @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+        @ApiResponse(code = 408, message = "Request Timeout"),
+        @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
+        @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
+        @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
+        @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
+      }
+    )
+    @PutMapping(
+      path = "/fooes/{id}",
+      produces = {
+        MediaType.APPLICATION_JSON_VALUE
+      },
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    public ResponseEntity<Void> update(
+      @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
+      @ApiParam(value = "foo", name = "foo", required = true) @Valid @RequestBody FooDTOV1 dto,
+      BindingResult bindingResult) throws ServiceException {
+      //--
+      try {
+        //
+        this.fooServiceV1.update(id, dto);
+        //Headers
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
+        return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
+      } catch (ServiceException ex) {
+        log.error("{}", ex.getMessage(), ex);
+        throw ex;
+      }
+      //---
+    }
 
   //  /**
   //   * Patch a foo by id.

@@ -13,11 +13,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ *
+ * @author cjrequena
+ * @version 1.0
+ */
 @Log4j2
 @Service
 public class FooServiceV1 {
@@ -62,6 +72,12 @@ public class FooServiceV1 {
     //--
   }
 
+  /**
+   *
+   * @param id
+   * @return
+   * @throws ServiceException
+   */
   @HystrixCommand(
     commandKey = "FooServiceV1.retrieveById",
     fallbackMethod = "retrieveByIdFallbackMethod"
@@ -142,6 +158,46 @@ public class FooServiceV1 {
 
   /**
    *
+   * @param id
+   * @param dto
+   * @return
+   * @throws ServiceException
+   */
+  @HystrixCommand(
+    commandKey = "FooServiceV1.update",
+    fallbackMethod = "updateFallbackMethod"
+  )
+  public ResponseEntity<Void> update(Long id, FooDTOV1 dto) throws ServiceException {
+    //--
+    try {
+      return fooServerServiceV1Feign.update(id,dto);
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage());
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage());
+      throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
+    }
+    //--
+  }
+
+  /**
+   *
+   * @param id
+   * @param dto
+   * @param ex
+   * @return
+   * @throws ServiceException
+   */
+  public ResponseEntity<Void>  updateFallbackMethod(Long id, FooDTOV1 dto, Throwable ex) throws ServiceException {
+    //--
+    log.debug("updateFallbackMethod");
+    throw (ServiceException) ex;
+    //--
+  }
+
+  /**
+   *
    */
   @FeignClient(name = "foo-server-service", url = "http://localhost:9080/foo-server-service")
   public interface FooServerServiceV1Feign {
@@ -177,5 +233,16 @@ public class FooServiceV1 {
       @RequestParam(value = "offset") Integer offset,
       @RequestParam(value = "limit") Integer limit) throws ServiceException;
 
+    @PutMapping(
+      path = "/fooes/{id}",
+      produces = {
+        MediaType.APPLICATION_JSON_VALUE
+      },
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    ResponseEntity<Void> update(
+      @PathVariable(value = "id") Long id,
+      @RequestBody FooDTOV1 dto
+    ) throws ServiceException;
   }
 }
