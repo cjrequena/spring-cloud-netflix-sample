@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -319,50 +320,51 @@ public class FooControllerV1 {
   //    //---
   //  }
 
-  //  /**
-  //   * Delete a foo by id.
-  //   *
-  //   * @param id {@link Integer}
-  //   * @return ResponseEntity {@link ResponseEntity}
-  //   */
-  //  @ApiOperation(
-  //    tags = "Foo Entity",
-  //    value = "Delete a foo by id.",
-  //    notes = "Delete a foo by id."
-  //  )
-  //  @ApiResponses(
-  //    value = {
-  //      @ApiResponse(code = 204, message = "OK - The request was successful; the resource was deleted."),
-  //      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-  //      @ApiResponse(code = 404, message = "Not Found"),
-  //      @ApiResponse(code = 408, message = "Request Timeout"),
-  //      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-  //      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't delete the resource. Please try again."),
-  //      @ApiResponse(code = 503, message = "Service Unavailable")
-  //    }
-  //  )
-  //  @DeleteMapping(
-  //    path = "/foos/{id}",
-  //    produces = {
-  //      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-  //    }
-  //  )
-  //  public ResponseEntity<Void> delete(@ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
-  //    //--
-  //    try {
-  //      //Headers
-  //      HttpHeaders responseHeaders = new HttpHeaders();
-  //      responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
-  //
-  //      this.fooServiceV1.delete(id);
-  //
-  //      return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
-  //
-  //    } catch (ServiceException ex) {
-  //      log.error("{}", ex.getMessage(), ex);
-  //      throw ex;
-  //    }
-  //    //---
-  //  }
+    /**
+     * Delete a foo by id.
+     *
+     * @param id {@link Integer}
+     * @return ResponseEntity {@link ResponseEntity}
+     */
+    @ApiOperation(
+      tags = "Foo Entity",
+      value = "Delete a foo by id.",
+      notes = "Delete a foo by id."
+    )
+    @ApiResponses(
+      value = {
+        @ApiResponse(code = 204, message = "OK - The request was successful; the resource was deleted."),
+        @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+        @ApiResponse(code = 404, message = "Not Found"),
+        @ApiResponse(code = 408, message = "Request Timeout"),
+        @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
+        @ApiResponse(code = 500, message = "Internal Server Error - We couldn't delete the resource. Please try again."),
+        @ApiResponse(code = 503, message = "Service Unavailable")
+      }
+    )
+    @DeleteMapping(
+      path = "/fooes/{id}",
+      produces = {
+        MediaType.APPLICATION_JSON_VALUE
+      },
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    public ResponseEntity<Void> delete(@ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
+      //--
+      try {
+        //Headers
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
+
+        this.fooServiceV1.delete(id);
+
+        return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
+
+      } catch (ServiceException ex) {
+        log.error("{}", ex.getMessage(), ex);
+        throw ex;
+      }
+      //---
+    }
 
 }
