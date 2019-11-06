@@ -11,10 +11,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,50 +101,50 @@ public class FooControllerV1 {
     //---
   }
 
-  //  /**
-  //   * Get a foo by id.
-  //   *
-  //   * @param id {@link Integer}
-  //   * @return ResponseEntity {@link ResponseEntity}
-  //   */
-  //  @ApiOperation(
-  //    tags = "Foo Entity",
-  //    value = "Get a foo by id.",
-  //    notes = "Get a foo by id."
-  //  )
-  //  @ApiResponses(
-  //    value = {
-  //      @ApiResponse(code = 200, message = "OK - The request was successful and the response body contains the representation requested."),
-  //      @ApiResponse(code = 400, message = "Bad Request - The data given in the GET failed validation. Inspect the response body for details."),
-  //      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-  //      @ApiResponse(code = 404, message = "Not Found"),
-  //      @ApiResponse(code = 408, message = "Request Timeout"),
-  //      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-  //      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't return the representation due to an internal server error."),
-  //      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again."),
-  //    }
-  //  )
-  //  @GetMapping(
-  //    path = "/foos/{id}",
-  //    produces = {
-  //      ApplicationMediaType.FOO_API_V1_APPLICATION_JSON_VALUE
-  //    }
-  //  )
-  //  public ResponseEntity<FooDTOV1> retrieve(
-  //    @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
-  //    //--
-  //    try {
-  //      //Headers
-  //      HttpHeaders responseHeaders = new HttpHeaders();
-  //      responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
-  //      FooDTOV1 dtoRS = this.fooServiceV1.retrieve(id);
-  //      return new ResponseEntity<>(dtoRS, responseHeaders, HttpStatus.OK);
-  //    } catch (ServiceException ex) {
-  //      log.error("{}: {}", ex.getErrorCode(), ex.getMessage(), ex);
-  //      throw ex;
-  //    }
-  //    //---
-  //  }
+    /**
+     * Get a foo by id.
+     *
+     * @param id {@link Integer}
+     * @return ResponseEntity {@link ResponseEntity}
+     */
+    @ApiOperation(
+      tags = "Foo Entity",
+      value = "Get a foo by id.",
+      notes = "Get a foo by id."
+    )
+    @ApiResponses(
+      value = {
+        @ApiResponse(code = 200, message = "OK - The request was successful and the response body contains the representation requested."),
+        @ApiResponse(code = 400, message = "Bad Request - The data given in the GET failed validation. Inspect the response body for details."),
+        @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+        @ApiResponse(code = 404, message = "Not Found"),
+        @ApiResponse(code = 408, message = "Request Timeout"),
+        @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
+        @ApiResponse(code = 500, message = "Internal Server Error - We couldn't return the representation due to an internal server error."),
+        @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again."),
+      }
+    )
+    @GetMapping(
+      path = "/fooes/{id}",
+      produces = {
+        MediaType.APPLICATION_JSON_VALUE
+      },
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    public ResponseEntity<FooDTOV1> retrieveById(
+      @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
+      //--
+      try {
+        //Headers
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
+        return this.fooServiceV1.retrieveById(id);
+      } catch (ServiceException ex) {
+        log.error("{}: {}", ex.getErrorCode(), ex.getMessage(), ex);
+        throw ex;
+      }
+      //---
+    }
 
   /**
    *

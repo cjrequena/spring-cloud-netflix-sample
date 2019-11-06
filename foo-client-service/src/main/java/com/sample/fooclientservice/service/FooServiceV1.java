@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,6 +58,38 @@ public class FooServiceV1 {
   public ResponseEntity<Void> createFallbackMethod(FooDTOV1 dto, Throwable ex) throws ServiceException {
     //--
     log.debug("createFallbackMethod");
+    throw (ServiceException) ex;
+    //--
+  }
+
+  @HystrixCommand(
+    commandKey = "FooServiceV1.retrieveById",
+    fallbackMethod = "retrieveByIdFallbackMethod"
+  )
+  public ResponseEntity<FooDTOV1> retrieveById(Long id) throws ServiceException {
+    //--
+    try {
+      return fooServerServiceV1Feign.retrieveById(id);
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage());
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage());
+      throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
+    }
+    //--
+  }
+
+  /**
+   *
+   * @param id
+   * @param ex
+   * @return
+   * @throws ServiceException
+   */
+  public ResponseEntity<FooDTOV1> retrieveByIdFallbackMethod(Long id, Throwable ex) throws ServiceException {
+    //--
+    log.debug("retrieveByIdFallbackMethod");
     throw (ServiceException) ex;
     //--
   }
@@ -119,8 +152,16 @@ public class FooServiceV1 {
       },
       headers = "Accept-Version=vnd.foo-service.v1"
     )
-    ResponseEntity<Void> create(
-      @RequestBody FooDTOV1 dto) throws ServiceException;
+    ResponseEntity<Void> create(@RequestBody FooDTOV1 dto) throws ServiceException;
+
+    @GetMapping(
+      path = "/fooes/{id}",
+      produces = {
+        MediaType.APPLICATION_JSON_VALUE
+      },
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    ResponseEntity<FooDTOV1> retrieveById(@PathVariable(value = "id") Long id) throws ServiceException;
 
     @GetMapping(
       path = "/fooes",

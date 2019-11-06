@@ -48,7 +48,6 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 @Configuration
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
-@ComponentScan(basePackages = {"com.sample.fooclientservice.ws.controller"})
 public class SwaggerConfiguration {
 
   /** The type resolver. */

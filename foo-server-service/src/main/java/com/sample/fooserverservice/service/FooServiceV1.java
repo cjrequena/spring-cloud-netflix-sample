@@ -95,7 +95,7 @@ public class FooServiceV1 {
    * @return
    * @throws ServiceException
    */
-  public FooDTOV1 retrieve(Long id) throws ServiceException {
+  public FooDTOV1 retrieveById(Long id) throws ServiceException {
     //--
     try {
       Optional<FooEntity> entity = this.fooRepository.findById(id);
@@ -160,7 +160,7 @@ public class FooServiceV1 {
       FooEntity entity = fooDtoEntityMapper.toEntity(dto);
       entity.setId(id);
       // Check NOT MODIFIED error
-      FooEntity oldEntity = fooDtoEntityMapper.toEntity(retrieve(id));
+      FooEntity oldEntity = fooDtoEntityMapper.toEntity(retrieveById(id));
       if (!entity.equals(oldEntity)) {
         // Save on database
         this.fooRepository.save(entity);

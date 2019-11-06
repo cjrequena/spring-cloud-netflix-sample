@@ -143,14 +143,14 @@ public class FooControllerV1 {
       MediaType.APPLICATION_JSON_VALUE
     }
   )
-  public ResponseEntity<FooDTOV1> retrieve(
+  public ResponseEntity<FooDTOV1> retrieveById(
     @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
     //--
     try {
       //Headers
       HttpHeaders responseHeaders = new HttpHeaders();
       responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
-      FooDTOV1 dtoRS = this.fooServiceV1.retrieve(id);
+      FooDTOV1 dtoRS = this.fooServiceV1.retrieveById(id);
       return new ResponseEntity<>(dtoRS, responseHeaders, HttpStatus.OK);
     } catch (ServiceException ex) {
       //log.error("{}: {}", ex.getErrorCode(), ex.getMessage(), ex);
