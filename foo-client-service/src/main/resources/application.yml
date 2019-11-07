@@ -141,3 +141,14 @@ hystrix.threadpool.default: # https://github.com/Netflix/Hystrix/wiki/Configurat
   metrics.rollingStats.timeInMilliseconds: 10000 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingstatstimeinmilliseconds-1
   metrics.rollingStats.numBuckets: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingstatsnumbuckets-1
 
+zuul:
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+  routes:
+    foo-server-service:
+      path: /foo-client-service/zuul/**
+      #serviceId: foo-server-service
+      url: http://localhost:9080/foo-server-service
+      stripPrefix: true
