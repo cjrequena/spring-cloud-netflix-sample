@@ -9,6 +9,7 @@ import com.sample.fooserverservice.dto.FooDTOV1;
 import com.sample.fooserverservice.exception.EErrorCode;
 import com.sample.fooserverservice.exception.ServiceException;
 import com.sample.fooserverservice.mapper.FooDtoEntityMapper;
+import com.sample.fooserverservice.common.patch.PatchHelper;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.json.JsonMergePatch;
+import javax.json.JsonPatch;
 import java.util.Optional;
 
 /**
@@ -45,16 +48,17 @@ public class FooServiceV1 {
   private FooDtoEntityMapper fooDtoEntityMapper;
   private FooRepository fooRepository;
   private ApplicationEventPublisher eventPublisher;
-
+  private final PatchHelper patchHelper;
   /**
    *
    * @param fooRepository
    */
   @Autowired
-  public FooServiceV1(FooRepository fooRepository, FooDtoEntityMapper fooDtoEntityMapper, ApplicationEventPublisher eventPublisher) {
+  public FooServiceV1(FooRepository fooRepository, FooDtoEntityMapper fooDtoEntityMapper, ApplicationEventPublisher eventPublisher, PatchHelper patchHelper) {
     this.fooRepository = fooRepository;
     this.fooDtoEntityMapper = fooDtoEntityMapper;
     this.eventPublisher = eventPublisher;
+    this.patchHelper = patchHelper;
   }
 
   /**
@@ -179,18 +183,38 @@ public class FooServiceV1 {
     }
   }
 
-  public FooDTOV1 patch(Long id, FooDTOV1 dto) throws ServiceException {
-    //--
+  public FooDTOV1 patch(Long id, JsonPatch patchDocument) throws ServiceException {
+    // --
     try {
-      Optional<FooEntity> entity = this.fooRepository.findById(id);
-      if (!entity.isPresent()) {
+      FooDTOV1 originalDTO = retrieveById(id);
+      if (originalDTO == null) {
         throw new ServiceException(EErrorCode.NOT_FOUND_ERROR.getErrorCode());
       }
-      fooDtoEntityMapper.toEntity(dto, entity.get());
-      this.fooRepository.save(entity.get());
-      dto = fooDtoEntityMapper.toDTO(entity.get());
-      //eventPublisher.publishEvent(new MessageEvent<FooDTOV1>(dto, MessageEventAction.PATCH, FooChannels.EVENT_NOTIFICATION_CHANNEL));
-      return dto;
+      FooEntity entity = fooDtoEntityMapper.toEntity(originalDTO);
+      FooDTOV1 dtoPatched = patchHelper.patch(patchDocument, originalDTO, FooDTOV1.class);
+      fooDtoEntityMapper.toEntity(dtoPatched, entity);
+      this.fooRepository.save(entity);
+      return dtoPatched;
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage());
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage());
+      throw new ServiceException(EErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(), ex);
+    }
+  }
+
+  public FooDTOV1 patch(Long id, JsonMergePatch mergePatchDocument) throws ServiceException {
+    try {
+      FooDTOV1 fooDTO = retrieveById(id);
+      if (fooDTO == null) {
+        throw new ServiceException(EErrorCode.NOT_FOUND_ERROR.getErrorCode());
+      }
+      FooEntity entity = fooDtoEntityMapper.toEntity(fooDTO);
+      FooDTOV1 dtoMergePatched = patchHelper.mergePatch(mergePatchDocument, fooDTO, FooDTOV1.class);
+      fooDtoEntityMapper.toEntity(dtoMergePatched, entity);
+      this.fooRepository.save(entity);
+      return dtoMergePatched;
     } catch (ServiceException ex) {
       log.error("{}", ex.getMessage());
       throw ex;

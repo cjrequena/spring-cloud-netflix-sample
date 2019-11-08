@@ -13,12 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.json.JsonMergePatch;
+import javax.json.JsonPatch;
 import java.util.List;
 
 /**
@@ -191,9 +194,59 @@ public class FooServiceV1 {
    * @return
    * @throws ServiceException
    */
+
   public ResponseEntity<Void> updateFallbackMethod(Long id, FooDTOV1 dto, Throwable ex) throws ServiceException {
     //--
     log.debug("updateFallbackMethod");
+    throw (ServiceException) ex;
+    //--
+  }
+
+  @HystrixCommand(
+    commandKey = "FooServiceV1.path",
+    fallbackMethod = "patchFallbackMethod"
+  )
+  public ResponseEntity<Void> patch(Long id, JsonPatch patchDocument) throws ServiceException {
+    //--
+    try {
+      return fooServerServiceV1Feign.patch(id, patchDocument);
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage());
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage());
+      throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
+    }
+  }
+
+
+  public ResponseEntity<Void> patchFallbackMethod(Long id, JsonPatch patchDocument, Throwable ex) throws ServiceException {
+    //--
+    log.debug("patchFallbackMethod");
+    throw (ServiceException) ex;
+    //--
+  }
+
+  @HystrixCommand(
+    commandKey = "FooServiceV1.path",
+    fallbackMethod = "patchFallbackMethod"
+  )
+  public ResponseEntity<Void> patch(Long id, JsonMergePatch mergePatchDocument) throws ServiceException {
+    //--
+    try {
+      return fooServerServiceV1Feign.patch(id, mergePatchDocument);
+    } catch (ServiceException ex) {
+      log.error("{}", ex.getMessage());
+      throw ex;
+    } catch (Exception ex) {
+      log.error("{}", ex.getMessage());
+      throw new ServiceException(EErrorCode.BAD_REQUEST_ERROR.getErrorCode(), ex);
+    }
+  }
+
+  public ResponseEntity<Void> patchFallbackMethod(Long id, JsonMergePatch mergePatchDocument, Throwable ex) throws ServiceException {
+    //--
+    log.debug("patchFallbackMethod");
     throw (ServiceException) ex;
     //--
   }
@@ -306,6 +359,36 @@ public class FooServiceV1 {
       @PathVariable(value = "id") Long id,
       @RequestBody FooDTOV1 dto
     ) throws ServiceException;
+
+    /**
+     *
+     * @param id
+     * @param patchDocument
+     * @return
+     * @throws ServiceException
+     */
+    @PatchMapping(
+      path = "/fooes/{id}",
+      produces = {MediaType.APPLICATION_JSON_VALUE},
+      consumes = {"application/json-patch+json"},
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    ResponseEntity<Void> patch(@PathVariable(value = "id") Long id, @RequestBody JsonPatch patchDocument) throws ServiceException;
+
+    /**
+     *
+     * @param id
+     * @param mergePatchDocument
+     * @return
+     * @throws ServiceException
+     */
+    @PatchMapping(
+      path = "/fooes/{id}",
+      produces = {MediaType.APPLICATION_JSON_VALUE},
+      consumes = {"application/merge-patch+json"},
+      headers = "Accept-Version=vnd.foo-service.v1"
+    )
+    ResponseEntity<Void> patch(@PathVariable(value = "id") Long id, @RequestBody JsonMergePatch mergePatchDocument) throws ServiceException;
 
     /**
      *
