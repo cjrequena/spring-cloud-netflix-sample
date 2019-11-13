@@ -1,6 +1,7 @@
 package com.sample.fooserverservice.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -27,7 +28,7 @@ public class JacksonConfiguration {
   public Jackson2ObjectMapperBuilder jacksonBuilder() {
     final Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
     builder.indentOutput(true);
-    builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     return builder;
   }
 
@@ -42,6 +43,7 @@ public class JacksonConfiguration {
     builder.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     builder.registerModule(new MoneyModule());
     builder.registerModule(new MoneyModule().withDefaultFormatting());
+    builder.findAndRegisterModules();
     return builder;
   }
 }

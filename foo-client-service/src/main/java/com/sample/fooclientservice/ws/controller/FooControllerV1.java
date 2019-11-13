@@ -309,7 +309,7 @@ public class FooControllerV1 {
       this.fooServiceV1.patch(id, patchDocument);
       //Headers
       HttpHeaders responseHeaders = new HttpHeaders();
-      responseHeaders.setLocation(ucBuilder.path("/foos/{id}").buildAndExpand(id).toUri());
+      responseHeaders.setLocation(ucBuilder.path("/fooes/{id}").buildAndExpand(id).toUri());
       return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
     } catch (ServiceException ex) {
       log.error("Error patching: {}", ex.getMessage());
@@ -359,7 +359,7 @@ public class FooControllerV1 {
       this.fooServiceV1.patch(id, mergePatchDocument);
       //Headers
       HttpHeaders responseHeaders = new HttpHeaders();
-      responseHeaders.setLocation(ucBuilder.path("/foos/{id}").buildAndExpand(id).toUri());
+      responseHeaders.setLocation(ucBuilder.path("/fooes/{id}").buildAndExpand(id).toUri());
       return new ResponseEntity<>(responseHeaders, HttpStatus.NO_CONTENT);
     } catch (ServiceException ex) {
       log.error("Error patching: {}", ex.getMessage());
