@@ -36,6 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 /**
  * <p>
  * <p>
@@ -55,6 +57,10 @@ import java.util.List;
 public class FooControllerV1 {
 
   public static final String CACHE_CONTROL = "Cache-Control";
+  public static final String ACCEPT_VERSION_VALUE = "Accept-Version=vnd.foo-service.v1";
+  public static final String APPLICATION_JSON_PATCH_VALUE = "application/json-patch+json";
+  public static final String APPLICATION_JSON_MERGE_PATCH_VALUE = "application/merge-patch+json";
+
 
   @Autowired
   private FooServiceV1 fooServiceV1;
@@ -87,9 +93,8 @@ public class FooControllerV1 {
   )
   @PostMapping(
     path = "/fooes",
-    produces = {
-      MediaType.APPLICATION_JSON_VALUE
-    }
+    produces = {APPLICATION_JSON_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<Void> create(
     @ApiParam(value = "foo", name = "foo", required = true) @Valid @RequestBody FooDTOV1 dto, BindingResult bindingResult,
@@ -141,9 +146,8 @@ public class FooControllerV1 {
   )
   @GetMapping(
     path = "/fooes/{id}",
-    produces = {
-      MediaType.APPLICATION_JSON_VALUE
-    }
+    produces = {APPLICATION_JSON_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<FooDTOV1> retrieveById(
     @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
@@ -189,10 +193,8 @@ public class FooControllerV1 {
   )
   @GetMapping(
     path = "/fooes",
-    produces = {
-      MediaType.APPLICATION_JSON_VALUE
-    },
-    headers = "Accept-Version=vnd.foo-service.v1"
+    produces = {APPLICATION_JSON_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<List<FooDTOV1>> retrieve(
     @ApiParam(value = "fields") @RequestParam(value = "fields", required = false) String fieldsQueryParam,
@@ -260,10 +262,8 @@ public class FooControllerV1 {
   )
   @PutMapping(
     path = "/fooes/{id}",
-    produces = {
-      MediaType.APPLICATION_JSON_VALUE
-    },
-    headers = "Accept-Version=vnd.foo-service.v1"
+    produces = {APPLICATION_JSON_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<Void> update(
     @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
@@ -313,9 +313,9 @@ public class FooControllerV1 {
   )
   @PatchMapping(
     path = "/fooes/{id}",
-    produces = {MediaType.APPLICATION_JSON_VALUE},
-    consumes = {"application/json-patch+json"},
-    headers = "Accept-Version=vnd.foo-service.v1"
+    produces = {APPLICATION_JSON_VALUE},
+    consumes = {APPLICATION_JSON_PATCH_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<Void> patch(
     @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
@@ -364,9 +364,9 @@ public class FooControllerV1 {
   )
   @PatchMapping(
     path = "/fooes/{id}",
-    produces = {MediaType.APPLICATION_JSON_VALUE},
-    consumes = {"application/merge-patch+json"},
-    headers = "Accept-Version=vnd.foo-service.v1"
+    produces = {APPLICATION_JSON_VALUE},
+    consumes = {APPLICATION_JSON_MERGE_PATCH_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<Void> patch(
     @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
@@ -410,8 +410,8 @@ public class FooControllerV1 {
   )
   @DeleteMapping(
     path = "/fooes/{id}",
-    produces = {MediaType.APPLICATION_JSON_VALUE},
-    headers = "Accept-Version=vnd.foo-service.v1"
+    produces = {APPLICATION_JSON_VALUE},
+    headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<Void> delete(@ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
     //--

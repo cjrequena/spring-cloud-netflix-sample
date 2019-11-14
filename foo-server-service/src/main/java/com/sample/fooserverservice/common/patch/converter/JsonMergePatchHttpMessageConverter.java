@@ -1,5 +1,6 @@
-package com.sample.fooserverservice.common.converter;
+package com.sample.fooserverservice.common.patch.converter;
 
+import com.sample.fooserverservice.common.patch.PatchMediaType;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.AbstractHttpMessageConverter;

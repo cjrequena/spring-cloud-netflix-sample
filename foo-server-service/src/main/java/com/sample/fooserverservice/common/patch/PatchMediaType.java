@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.common.converter;
+package com.sample.fooserverservice.common.patch;
 
 import org.springframework.http.MediaType;
 
