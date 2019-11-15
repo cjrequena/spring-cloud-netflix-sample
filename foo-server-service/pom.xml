@@ -90,6 +90,22 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
+        <!-- graphql -->
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-spring-boot-starter</artifactId>
+            <version>5.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphiql-spring-boot-starter</artifactId>
+            <version>5.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphql-java-tools</artifactId>
+            <version>5.2.4</version>
+        </dependency>
         <!-- database -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -208,6 +224,7 @@
                     <include>**/*.xml</include>
                     <include>**/*.txt</include>
                     <include>**/*.sql</include>
+                    <include>**/*.graphqls</include>
                 </includes>
             </resource>
         </resources>

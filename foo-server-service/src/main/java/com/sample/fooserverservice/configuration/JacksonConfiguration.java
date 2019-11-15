@@ -39,8 +39,8 @@ public class JacksonConfiguration {
   @Bean
   public ObjectMapper objectMapper() {
     ObjectMapper builder = jacksonBuilder().simpleDateFormat("yyyy-MM-dd").modules(new JavaTimeModule()).build();
-    builder.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    builder.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+//    builder.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//    builder.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     builder.registerModule(new MoneyModule());
     builder.registerModule(new MoneyModule().withDefaultFormatting());
     builder.findAndRegisterModules();

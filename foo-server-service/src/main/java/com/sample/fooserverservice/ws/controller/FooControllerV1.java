@@ -197,22 +197,16 @@ public class FooControllerV1 {
     headers = {ACCEPT_VERSION_VALUE}
   )
   public ResponseEntity<List<FooDTOV1>> retrieve(
-    @ApiParam(value = "fields") @RequestParam(value = "fields", required = false) String fieldsQueryParam,
-    @ApiParam(value = "filters") @RequestParam(value = "filters", required = false) String searchQueryParam,
-    @ApiParam(value = "sort") @RequestParam(value = "sort", required = false) String sortQueryParam,
+    @ApiParam(value = "fields") @RequestParam(value = "fields", required = false) String fields,
+    @ApiParam(value = "filters") @RequestParam(value = "filters", required = false) String filters,
+    @ApiParam(value = "sort") @RequestParam(value = "sort", required = false) String sort,
     @ApiParam(value = "offset") @RequestParam(value = "offset", required = false) Integer offset,
     @ApiParam(value = "limit") @RequestParam(value = "limit", required = false) Integer limit
   ) throws ServiceException {
     //--
     try {
 
-      log.debug("fields: {} ", fieldsQueryParam);
-      log.debug("filters: {} ", searchQueryParam);
-      log.debug("sort: {} ", sortQueryParam);
-      log.debug("offset: {} ", offset);
-      log.debug("limit: {} ", limit);
-
-      Page page = this.fooServiceV1.retrieve(searchQueryParam, sortQueryParam, offset, limit);
+      Page page = this.fooServiceV1.retrieve(filters, sort, offset, limit);
 
       HttpHeaders responseHeaders = new HttpHeaders();
       responseHeaders.set(CACHE_CONTROL, "no store, private, max-age=0");
