@@ -13,8 +13,8 @@
 #-----------------------------------------------------------------------------------------------
 # PROFILE LOCAL
 #-----------------------------------------------------------------------------------------------
-spring:
-  profiles: local
+spring.profiles: local
+spring.main.allow-bean-definition-overriding: true # Enable bean override
 
 # INFO
 info:
@@ -90,85 +90,7 @@ spring.jpa.properties.hibernate.hibernate.dialect: true
 spring.jpa.properties.hibernate.id.new_generator_mappings: false
 spring.jpa.properties.hibernate.search.autoregister_listeners: false
 spring.jpa.properties.hibernate.bytecode.use_reflection_optimizer: false
-
+#
 spring.flyway.enabled: true
 
-#
-spring.main.allow-bean-definition-overriding: true # Enable bean override
-
-# FEIGN
-feign:
-  okhttp:
-    enabled: true
-  histrix:
-    enabled: true
-  compression:
-    request:
-      enabled: true
-    response:
-      enabled: true
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-
-# RIBBON
-# You can configure the Hystrix timeout for individual routes using service.ribbon.* properties.
-ribbon:
-  eureka:
-    enabled: false
-  MaxAutoRetries: 1 # Max number of retries on the same server (excluding the first try)
-  MaxAutoRetriesNextServer: 3 # Max number of next servers to retry (excluding the first server)
-  OkToRetryOnAllOperations: true # Whether all operations can be retried for this client
-  ServerListRefreshInterval: 2000 # Interval to refresh the server list from the source
-  ConnectTimeout: 30000 # Connect timeout used by Apache HttpClient
-  ReadTimeout: 30000 # Read timeout used by Apache HttpClient
-  #retryableStatusCodes: 404,502
-  #listOfServers: www.microsoft.com:80,www.yahoo.com:80,www.google.com:80
-
-# HYSTRIX
-# - https://github.com/Netflix/Hystrix/wiki/Configuration
-hystrix.command.default.execution: # https://github.com/Netflix/Hystrix/wiki/Configuration#execution
-  isolation.strategy: THREAD # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationstrategy
-  isolation.thread.timeoutInMilliseconds: 1000 # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadtimeoutinmilliseconds
-  isolation.thread.interruptOnTimeout: true # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadinterruptontimeout
-  isolation.thread.interruptOnCancel: false # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadinterruptoncancel
-  isolation.semaphore.maxConcurrentRequests: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationsemaphoremaxconcurrentrequests
-  timeout.enabled: false # https://github.com/Netflix/Hystrix/wiki/Configuration#execution.timeout.enabled
-hystrix.command.default.fallback: # https://github.com/Netflix/Hystrix/wiki/Configuration#fallback
-  enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#fallbackenabled
-  isolation.semaphore.maxConcurrentRequests: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#fallbackisolationsemaphoremaxconcurrentrequests
-hystrix.command.default.circuitBreaker: # https://github.com/Netflix/Hystrix/wiki/Configuration#circuit-breaker
-  enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerenabled
-  requestVolumeThreshold: 20 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerrequestvolumethreshold
-  sleepWindowInMilliseconds: 5000 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakersleepwindowinmilliseconds
-  errorThresholdPercentage: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakererrorthresholdpercentage
-  forceOpen: false # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerforceopen
-  forceClosed: false # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerforceclosed
-hystrix.command.default.metrics: # https://github.com/Netflix/Hystrix/wiki/Configuration#metrics
-  rollingStats.timeInMilliseconds: 10000 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingstatstimeinmilliseconds
-  rollingStats.numBuckets: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingstatsnumbuckets
-  rollingPercentile.enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingpercentileenabled
-  rollingPercentile.timeInMilliseconds: 60000 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingpercentiletimeinmilliseconds
-  rollingPercentile.numBuckets: 6 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingpercentilenumbuckets
-  rollingPercentile.bucketSize: 100 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingpercentilebucketsize
-  healthSnapshot.intervalInMilliseconds: 500 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricshealthsnapshotintervalinmilliseconds
-hystrix.command.default: # https://github.com/Netflix/Hystrix/wiki/Configuration#request-context
-  requestCache.enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#requestcacheenabled
-  requestLog.enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#requestlogenabled
-hystrix.collapser.default: # https://github.com/Netflix/Hystrix/wiki/Configuration#collapser-properties
-  maxRequestsInBatch: Integer.MAX_VALUE # https://github.com/Netflix/Hystrix/wiki/Configuration#maxrequestsinbatch
-  timerDelayInMilliseconds: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#timerdelayinmilliseconds
-  requestCache.enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#requestcacheenabled-1
-hystrix.threadpool.default: # https://github.com/Netflix/Hystrix/wiki/Configuration#threadpool-properties
-  coreSize: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#coresize
-  maximumSize: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#maximumsize
-  maxQueueSize: -1 # https://github.com/Netflix/Hystrix/wiki/Configuration#maxqueuesize
-  queueSizeRejectionThreshold: 5 # https://github.com/Netflix/Hystrix/wiki/Configuration#queuesizerejectionthreshold
-  keepAliveTimeMinutes: 1 # https://github.com/Netflix/Hystrix/wiki/Configuration#keepalivetimeminutes
-  allowMaximumSizeToDivergeFromCoreSize: false # https://github.com/Netflix/Hystrix/wiki/Configuration#allowmaximumsizetodivergefromcoresize
-  metrics.rollingStats.timeInMilliseconds: 10000 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingstatstimeinmilliseconds-1
-  metrics.rollingStats.numBuckets: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#metricsrollingstatsnumbuckets-1
 

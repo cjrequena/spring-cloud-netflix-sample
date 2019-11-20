@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableAutoConfiguration
 @EnableConfigServer
-public class MainApplication {
+public class ConfigServerMainApplication {
   public static void main(String[] args) {
-    SpringApplication.run(MainApplication.class, args);
+    SpringApplication.run(ConfigServerMainApplication.class, args);
   }
 }

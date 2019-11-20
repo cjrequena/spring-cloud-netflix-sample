@@ -1,5 +1,6 @@
 package com.sample.fooserverservice.service;
 
+import com.sample.fooserverservice.common.patch.PatchHelper;
 import com.sample.fooserverservice.db.OffsetLimitRequestBuilder;
 import com.sample.fooserverservice.db.entity.FooEntity;
 import com.sample.fooserverservice.db.repository.FooRepository;
@@ -9,7 +10,6 @@ import com.sample.fooserverservice.dto.FooDTOV1;
 import com.sample.fooserverservice.exception.EErrorCode;
 import com.sample.fooserverservice.exception.ServiceException;
 import com.sample.fooserverservice.mapper.FooDtoEntityMapper;
-import com.sample.fooserverservice.common.patch.PatchHelper;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import lombok.extern.log4j.Log4j2;

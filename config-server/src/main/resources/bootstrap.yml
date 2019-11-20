@@ -3,7 +3,7 @@ server.port: ${SERVER_PORT:8888} # Server HTTP port.
 
 ---
 spring:
-  service:
+  application:
     name: ${SPRING_SERVICE_NAME:config-server}
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:default}
@@ -14,10 +14,10 @@ spring:
       enabled: ${SPRING_CLOUD_CONSUL_ENABLED:true}
       discovery:
         # Service name
-        serviceName: ${spring.service.name}
+        serviceName: ${spring.application.name}
         # Unique service instance id
-        #instanceId: ${spring.service.name}:${random.value}
-        instanceId: ${spring.service.name}
+        #instanceId: ${spring.application.name}:${random.value}
+        instanceId: ${spring.application.name}
         # Is service discovery enabled?
         enabled: ${SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED:true}
         # Register as a service in consul.
@@ -35,7 +35,7 @@ spring:
         # Timeout to deregister services critical for longer than timeout (e.g. 30m).
         healthCheckCriticalTimeout: ${SPRING_CLOUD_CONSUL_DISCOVERY_HEALTHCHECKCRITICALTIMEOUT:10m}
         # Tags to use when registering service
-        tags: service_name=${spring.service.name}, maven_version=${project.version}, commit_id=${git.commit.id}, commit_time=${git.commit.time}, profiles_active=${spring.profiles.active}
+        tags: service_name=${spring.application.name}, maven_version=${project.version}, commit_id=${git.commit.id}, commit_time=${git.commit.time}, profiles_active=${spring.profiles.active}
         # Use ip address rather than hostname during registration
         prefer-ip-address: ${SPRING_CLOUD_CONSUL_DISCOVERY_PREFER_IP_ADDRESS:true}
         # IP address to use when accessing service (must also set preferIpAddress to use)

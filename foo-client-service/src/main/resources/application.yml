@@ -99,13 +99,13 @@ ribbon:
 
 # HYSTRIX
 # - https://github.com/Netflix/Hystrix/wiki/Configuration
-hystrix.command.default.execution: # https://github.com/Netflix/Hystrix/wiki/Configuration#execution
-  isolation.strategy: THREAD # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationstrategy
-  isolation.thread.timeoutInMilliseconds: 1000 # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadtimeoutinmilliseconds
-  isolation.thread.interruptOnTimeout: true # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadinterruptontimeout
-  isolation.thread.interruptOnCancel: false # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadinterruptoncancel
-  isolation.semaphore.maxConcurrentRequests: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationsemaphoremaxconcurrentrequests
+hystrix.command.default.execution.isolation: # https://github.com/Netflix/Hystrix/wiki/Configuration#execution
+  strategy: THREAD # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationstrategy
   timeout.enabled: false # https://github.com/Netflix/Hystrix/wiki/Configuration#execution.timeout.enabled
+  thread.timeoutInMilliseconds: 1000 # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadtimeoutinmilliseconds
+  thread.interruptOnTimeout: true # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadinterruptontimeout
+  thread.interruptOnCancel: false # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationthreadinterruptoncancel
+  semaphore.maxConcurrentRequests: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#executionisolationsemaphoremaxconcurrentrequests
 hystrix.command.default.fallback: # https://github.com/Netflix/Hystrix/wiki/Configuration#fallback
   enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#fallbackenabled
   isolation.semaphore.maxConcurrentRequests: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#fallbackisolationsemaphoremaxconcurrentrequests
@@ -113,7 +113,7 @@ hystrix.command.default.circuitBreaker: # https://github.com/Netflix/Hystrix/wik
   enabled: true # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerenabled
   requestVolumeThreshold: 20 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerrequestvolumethreshold
   sleepWindowInMilliseconds: 5000 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakersleepwindowinmilliseconds
-  errorThresholdPercentage: 10 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakererrorthresholdpercentage
+  errorThresholdPercentage: 50 # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakererrorthresholdpercentage
   forceOpen: false # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerforceopen
   forceClosed: false # https://github.com/Netflix/Hystrix/wiki/Configuration#circuitbreakerforceclosed
 hystrix.command.default.metrics: # https://github.com/Netflix/Hystrix/wiki/Configuration#metrics
