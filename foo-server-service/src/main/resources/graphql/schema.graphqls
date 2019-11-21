@@ -1,0 +1,23 @@
+type FooDTOV1 {
+    id: ID!
+    name: String
+    description: String
+    creationDate: String
+    booes: [BooDTOV1]
+}
+
+type BooDTOV1 {
+    id: ID!
+    name: String
+    description: String
+    creationDate: String
+}
+
+type Query {
+    fooes(filters: String, limit: Int = 0, offset: Int = 0) : [FooDTOV1]
+    fooesById(id: ID!) : FooDTOV1
+    # --
+    booes(filters: String, limit: Int = 0, offset: Int = 0) : [BooDTOV1]
+    booesById(id: ID!) : BooDTOV1
+
+}
