@@ -1,0 +1,11 @@
+type BooDTOV1 {
+    id: ID!
+    name: String
+    description: String
+    creationDate: String
+}
+
+extend type Query {
+    booes(filters: String, limit: Int = 0, offset: Int = 0) : [BooDTOV1]
+    booById(id: ID!) : BooDTOV1
+}

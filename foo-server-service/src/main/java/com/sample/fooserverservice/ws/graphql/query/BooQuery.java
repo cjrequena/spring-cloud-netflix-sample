@@ -37,7 +37,7 @@ public class BooQuery implements GraphQLQueryResolver {
    * @return
    * @throws ServiceException
    */
-  public BooDTOV1 booesById(Long id) throws ServiceException {
+  public BooDTOV1 booById(Long id) throws ServiceException {
     return this.booServiceV1.retrieveById(id);
   }
 }

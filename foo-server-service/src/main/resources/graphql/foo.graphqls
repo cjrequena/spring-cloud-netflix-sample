@@ -1,0 +1,12 @@
+type FooDTOV1 {
+    id: ID!
+    name: String
+    description: String
+    creationDate: String
+    booes: [BooDTOV1]
+}
+
+extend type Query {
+    fooes(filters: String, limit: Int = 0, offset: Int = 0) : [FooDTOV1]
+    fooById(id: ID!) : FooDTOV1
+}

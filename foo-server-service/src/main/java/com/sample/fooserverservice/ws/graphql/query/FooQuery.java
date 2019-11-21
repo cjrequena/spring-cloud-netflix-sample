@@ -37,7 +37,7 @@ public class FooQuery implements GraphQLQueryResolver {
    * @return
    * @throws ServiceException
    */
-  public FooDTOV1 fooesById(Long id) throws ServiceException {
+  public FooDTOV1 fooById(Long id) throws ServiceException {
     return this.fooServiceV1.retrieveById(id);
   }
 }
