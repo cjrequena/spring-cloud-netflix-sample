@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,7 +53,7 @@ public class FooEntity {
   @Convert(converter = LocalDateConverter.class)
   private LocalDate creationDate;
 
-  @OneToMany(targetEntity = BooEntity.class, mappedBy = "foo", cascade = CascadeType.ALL)
+  @OneToMany(targetEntity = BooEntity.class, mappedBy = "foo", cascade = CascadeType.ALL, fetch= FetchType.LAZY)
   private List<BooEntity> booes;
 
 }

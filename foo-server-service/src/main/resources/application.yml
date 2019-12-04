@@ -93,4 +93,6 @@ spring.jpa.properties.hibernate.bytecode.use_reflection_optimizer: false
 #
 spring.flyway.enabled: true
 
+#RSOCKET
+spring.rsocket.server.port: 7000
 
