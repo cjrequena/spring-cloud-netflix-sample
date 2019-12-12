@@ -17,7 +17,7 @@ spring:
         serviceName: ${spring.application.name}
         # Unique service instance id
         instanceId: ${spring.application.name}
-        # Is service discovery enabled?
+        # Is service discovery enabled through consul?
         enabled: ${SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED:false}
         # Register as a service in consul.
         register: ${SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER:false}
@@ -38,7 +38,7 @@ spring:
         # Use ip address rather than hostname during registration
         prefer-ip-address: ${SPRING_CLOUD_CONSUL_DISCOVERY_PREFER_IP_ADDRESS:false}
         # IP address to use when accessing service (must also set preferIpAddress to use)
-        ipAddress: ${SPRING_CLOUD_CONSUL_DISCOVERY_IPADDRESS:127.0.0.1}
+        #ipAddress: ${SPRING_CLOUD_CONSUL_DISCOVERY_IPADDRESS:127.0.0.1}
         # Port to register the service under (defaults to listening port)
         #port: ${SPRING_CLOUD_CONSUL_DISCOVERY_PORT}
     config:
