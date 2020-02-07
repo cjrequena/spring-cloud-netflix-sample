@@ -27,12 +27,8 @@
         <spring-cloud-dependencies.version>Greenwich.SR3</spring-cloud-dependencies.version>
         <!--https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-contract-dependencies-->
         <spring-cloud-contract-dependencies.version>2.0.1.RELEASE</spring-cloud-contract-dependencies.version>
-        <!--https://mvnrepository.com/artifact/io.springfox/springfox-swagger2-->
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-        <!--https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui-->
-        <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
-        <!--https://mvnrepository.com/artifact/io.springfox/springfox-bean-validators-->
-        <springfox-bean-validators.version>2.9.2</springfox-bean-validators.version>
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+        <springdoc-openapi-ui.version>1.2.30</springdoc-openapi-ui.version>
         <!--https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter-->
         <mybatis-spring-boot-starter.version>2.0.1</mybatis-spring-boot-starter.version>
         <!--https://mvnrepository.com/artifact/org.mapstruct/mapstruct-jdk8-->

@@ -17,4 +17,5 @@ public class Constant {
   public static final String EVENT_CODE = "event-code";
   public static final String ENTITY_ID = "entity-id";
   public static final String ENTITY_NAME = "entity-name";
+  public static final String VND_FOO_SERVICE_V1 = "vnd.foo-service.v1";
 }

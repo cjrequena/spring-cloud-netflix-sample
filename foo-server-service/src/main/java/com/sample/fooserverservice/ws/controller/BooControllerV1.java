@@ -1,20 +1,24 @@
 package com.sample.fooserverservice.ws.controller;
 
 import com.sample.fooserverservice.dto.BooDTOV1;
+import com.sample.fooserverservice.dto.FooDTOV1;
 import com.sample.fooserverservice.exception.EErrorCode;
 import com.sample.fooserverservice.exception.ServiceException;
 import com.sample.fooserverservice.service.BooServiceV1;
 import cz.jirutka.rsql.parser.RSQLParserException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.sample.fooserverservice.common.Constant.VND_FOO_SERVICE_V1;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -48,18 +53,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @Log4j2
 @RestController
-@RequestMapping(value = "/foo-server-service")
-@Api(
-  value = "Boo Entity",
-  tags = {"Boo Entity"}
-)
+@RequestMapping(value = "/foo-server-service", headers = {"Accept-Version=" + VND_FOO_SERVICE_V1})
 public class BooControllerV1 {
 
   public static final String CACHE_CONTROL = "Cache-Control";
   public static final String ACCEPT_VERSION_VALUE = "Accept-Version=vnd.boo-service.v1";
   public static final String APPLICATION_JSON_PATCH_VALUE = "application/json-patch+json";
   public static final String APPLICATION_JSON_MERGE_PATCH_VALUE = "application/merge-patch+json";
-
 
   @Autowired
   private BooServiceV1 booServiceV1;
@@ -72,31 +72,31 @@ public class BooControllerV1 {
    * @return ResponseEntity {@link ResponseEntity}
    * @throws ServiceException {@link ServiceException}
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Create a new boo.",
-    notes = "Create a new boo."
+  @Operation(
+    summary = "Create a new boo.",
+    description = "Create a new foo.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string",implementation = String.class, allowableValues = {VND_FOO_SERVICE_V1}))},
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = BooDTOV1.class)))
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 201, message = "Created - The request was successful, we created a new resource and the response body contains the representation."),
-      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
-      @ApiResponse(code = 400, message = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
-      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
+      @ApiResponse(responseCode = "201", description = "Created - The request was successful, we created a new resource and the response body contains the representation."),
+      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the POST failed validation. Inspect the response body for details."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "409", description = "Conflict - The request could not be processed because of conflict in the request"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't create the resource. Please try again."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
     }
   )
   @PostMapping(
     path = "/booes",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<Void> create(
-    @ApiParam(value = "boo", name = "boo", required = true) @Valid @RequestBody BooDTOV1 dto, BindingResult bindingResult,
+    @Valid @RequestBody BooDTOV1 dto, BindingResult bindingResult,
     HttpServletRequest request, UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
     try {
@@ -126,30 +126,29 @@ public class BooControllerV1 {
    * @param id {@link Integer}
    * @return ResponseEntity {@link ResponseEntity}
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Get a boo by id.",
-    notes = "Get a boo by id."
+  @Operation(
+    summary = "Get a boo by id.",
+    description = "Get a boo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))}
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 200, message = "OK - The request was successful and the response body contains the representation requested."),
-      @ApiResponse(code = 400, message = "Bad Request - The data given in the GET failed validation. Inspect the response body for details."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 404, message = "Not Found"),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't return the representation due to an internal server error."),
-      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again."),
+      @ApiResponse(responseCode = "200", description = "OK - The request was successful and the response body contains the representation requested."),
+      @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the GET failed validation. Inspect the response body for details."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "404", description = "Not Found"),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't return the representation due to an internal server error."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again."),
     }
   )
   @GetMapping(
     path = "/booes/{id}",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<BooDTOV1> retrieveById(
-    @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
+    @PathVariable(value = "id") Long id) throws ServiceException {
     //--
     try {
       //Headers
@@ -172,35 +171,33 @@ public class BooControllerV1 {
    * @return ResponseEntity
    * @throws ServiceException
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Get a list of booes.",
-    notes = "Get a list of booes.",
-    responseContainer = "List"
+  @Operation(
+    summary = "Get a list of booes.",
+    description = "Get a list of booes.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))}
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 200, message = "OK - The request was successful and the response body contains the representation requested."),
-      @ApiResponse(code = 400, message = "Bad Request - The data given in the GET failed validation. Inspect the response body for details."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 404, message = "Not Found"),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't return the representation due to an internal server error."),
-      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again."),
+      @ApiResponse(responseCode = "200", description = "OK - The request was successful and the response body contains the representation requested."),
+      @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the GET failed validation. Inspect the response body for details."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "404", description = "Not Found"),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't return the representation due to an internal server error."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable to return the representation. Please wait for a bit and try again."),
     }
   )
   @GetMapping(
     path = "/booes",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<List<BooDTOV1>> retrieve(
-    @ApiParam(value = "fields") @RequestParam(value = "fields", required = false) String fields,
-    @ApiParam(value = "filters") @RequestParam(value = "filters", required = false) String filters,
-    @ApiParam(value = "sort") @RequestParam(value = "sort", required = false) String sort,
-    @ApiParam(value = "offset") @RequestParam(value = "offset", required = false) Integer offset,
-    @ApiParam(value = "limit") @RequestParam(value = "limit", required = false) Integer limit
+    @RequestParam(value = "fields", required = false) String fields,
+    @RequestParam(value = "filters", required = false) String filters,
+    @RequestParam(value = "sort", required = false) String sort,
+    @RequestParam(value = "offset", required = false) Integer offset,
+    @RequestParam(value = "limit", required = false) Integer limit
   ) throws ServiceException {
     //--
     try {
@@ -235,32 +232,32 @@ public class BooControllerV1 {
    * @return Void {@link Void}
    * @throws ServiceException {@link ServiceException}
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Update a boo by id.",
-    notes = "Update a boo by id."
+  @Operation(
+    summary = "Update a boo by id.",
+    description = "Update a boo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))},
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = BooDTOV1.class)))
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 200, message = "OK - The request was successful, we updated the resource and the response body contains the representation."),
-      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
-      @ApiResponse(code = 400, message = "Bad Request - The data given in the PUT failed validation. Inspect the response body for details."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
-      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
+      @ApiResponse(responseCode = "200", description = "OK - The request was successful, we updated the resource and the response body contains the representation."),
+      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the PUT failed validation. Inspect the response body for details."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "409", description = "Conflict - The request could not be processed because of conflict in the request"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't create the resource. Please try again."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
     }
   )
   @PutMapping(
     path = "/booes/{id}",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<Void> update(
-    @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
-    @ApiParam(value = "boo", name = "boo", required = true) @Valid @RequestBody BooDTOV1 dto,
+    @PathVariable(value = "id") Long id,
+    @Valid @RequestBody BooDTOV1 dto,
     BindingResult bindingResult) throws ServiceException {
     //--
     try {
@@ -285,34 +282,34 @@ public class BooControllerV1 {
    * @return Void {@link Void}
    * @throws ServiceException {@link ServiceException}
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Patch a boo by id.",
-    notes = "Patch a boo by id."
+  @Operation(
+    summary = "Patch a boo by id.",
+    description = "Patch a boo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))},
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = APPLICATION_JSON_PATCH_VALUE, schema = @Schema(implementation = JsonPatch.class)))
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 200, message = "OK - The request was successful, we updated the resource and the response body contains the representation."),
-      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
-      @ApiResponse(code = 400, message = "Bad Request - The data given in the PATCH failed validation. Inspect the response body for details."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 404, message = "Not Found"),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
-      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
+      @ApiResponse(responseCode = "200", description = "OK - The request was successful, we updated the resource and the response body contains the representation."),
+      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the PATCH failed validation. Inspect the response body for details."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "404", description = "Not Found"),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "409", description = "Conflict - The request could not be processed because of conflict in the request"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't create the resource. Please try again."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
     }
   )
   @PatchMapping(
     path = "/booes/{id}",
     produces = {APPLICATION_JSON_VALUE},
-    consumes = {APPLICATION_JSON_PATCH_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    consumes = {APPLICATION_JSON_PATCH_VALUE}
   )
   public ResponseEntity<Void> patch(
-    @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
-    @ApiParam(value = "boo", name = "boo", required = true) @RequestBody JsonPatch patchDocument,
+    @PathVariable(value = "id") Long id,
+    @RequestBody JsonPatch patchDocument,
     UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
     try {
@@ -337,33 +334,32 @@ public class BooControllerV1 {
    * @return Void {@link Void}
    * @throws ServiceException {@link ServiceException}
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Patch a boo by id.",
-    notes = "Patch a boo by id."
+  @Operation(
+    summary = "Patch a boo by id.",
+    description = "Patch a boo by id.",
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = APPLICATION_JSON_MERGE_PATCH_VALUE, schema = @Schema(implementation = JsonMergePatch.class)))
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 200, message = "OK - The request was successful, we updated the resource and the response body contains the representation."),
-      @ApiResponse(code = 204, message = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
-      @ApiResponse(code = 400, message = "Bad Request - The data given in the PATCH failed validation. Inspect the response body for details."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 409, message = "Conflict - The request could not be processed because of conflict in the request"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't create the resource. Please try again."),
-      @ApiResponse(code = 503, message = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
+      @ApiResponse(responseCode = "200", description = "OK - The request was successful, we updated the resource and the response body contains the representation."),
+      @ApiResponse(responseCode = "204", description = "No Content - The request was successful, we created a new resource and the response body does not contains the representation."),
+      @ApiResponse(responseCode = "400", description = "Bad Request - The data given in the PATCH failed validation. Inspect the response body for details."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "409", description = "Conflict - The request could not be processed because of conflict in the request"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't create the resource. Please try again."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable - We are temporarily unable. Please wait for a bit and try again. ")
     }
   )
   @PatchMapping(
     path = "/booes/{id}",
     produces = {APPLICATION_JSON_VALUE},
-    consumes = {APPLICATION_JSON_MERGE_PATCH_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    consumes = {APPLICATION_JSON_MERGE_PATCH_VALUE}
   )
   public ResponseEntity<Void> patch(
-    @ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id,
-    @ApiParam(value = "boo", name = "boo", required = true) @RequestBody JsonMergePatch mergePatchDocument,
+    @PathVariable(value = "id") Long id,
+    @RequestBody JsonMergePatch mergePatchDocument,
     UriComponentsBuilder ucBuilder) throws ServiceException {
     //--
     try {
@@ -385,28 +381,27 @@ public class BooControllerV1 {
    * @param id {@link Integer}
    * @return ResponseEntity {@link ResponseEntity}
    */
-  @ApiOperation(
-    tags = "Boo Entity",
-    value = "Delete a boo by id.",
-    notes = "Delete a boo by id."
+  @Operation(
+    summary = "Delete a boo by id.",
+    description = "Delete a boo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))}
   )
   @ApiResponses(
     value = {
-      @ApiResponse(code = 204, message = "OK - The request was successful; the resource was deleted."),
-      @ApiResponse(code = 401, message = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
-      @ApiResponse(code = 404, message = "Not Found"),
-      @ApiResponse(code = 408, message = "Request Timeout"),
-      @ApiResponse(code = 429, message = "Too Many Requests - Your application is sending too many simultaneous requests."),
-      @ApiResponse(code = 500, message = "Internal Server Error - We couldn't delete the resource. Please try again."),
-      @ApiResponse(code = 503, message = "Service Unavailable")
+      @ApiResponse(responseCode = "204", description = "OK - The request was successful; the resource was deleted."),
+      @ApiResponse(responseCode = "401", description = "Unauthorized - The supplied credentials, if any, are not sufficient to access the resource."),
+      @ApiResponse(responseCode = "404", description = "Not Found"),
+      @ApiResponse(responseCode = "408", description = "Request Timeout"),
+      @ApiResponse(responseCode = "429", description = "Too Many Requests - Your application is sending too many simultaneous requests."),
+      @ApiResponse(responseCode = "500", description = "Internal Server Error - We couldn't delete the resource. Please try again."),
+      @ApiResponse(responseCode = "503", description = "Service Unavailable")
     }
   )
   @DeleteMapping(
     path = "/booes/{id}",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
-  public ResponseEntity<Void> delete(@ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException {
+  public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) throws ServiceException {
     //--
     try {
       //Headers

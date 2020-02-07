@@ -94,3 +94,12 @@ spring.jpa.properties.hibernate.bytecode.use_reflection_optimizer: false
 spring.flyway.enabled: true
 
 
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+  version: '@springdoc.version@'

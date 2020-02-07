@@ -4,7 +4,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.sample.fooclientservice.dto.FooDTOV1;
 import com.sample.fooclientservice.exception.EErrorCode;
 import com.sample.fooclientservice.exception.ServiceException;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -406,6 +405,6 @@ public class FooServiceV1 {
       },
       headers = "Accept-Version=vnd.foo-service.v1"
     )
-    ResponseEntity<Void> delete(@ApiParam(value = "id", required = true) @PathVariable(value = "id") Long id) throws ServiceException;
+    ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) throws ServiceException;
   }
 }
