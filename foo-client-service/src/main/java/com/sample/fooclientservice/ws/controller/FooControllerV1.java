@@ -4,12 +4,18 @@ import com.sample.fooclientservice.dto.FooDTOV1;
 import com.sample.fooclientservice.exception.EErrorCode;
 import com.sample.fooclientservice.exception.ServiceException;
 import com.sample.fooclientservice.service.FooServiceV1;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.sample.fooclientservice.common.Constant.VND_FOO_SERVICE_V1;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
@@ -43,7 +50,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @Log4j2
 @RestController
-@RequestMapping(value = "/foo-client-service")
+@RequestMapping(value = "/foo-client-service", headers = {"Accept-Version=" + VND_FOO_SERVICE_V1})
+
 public class FooControllerV1 {
 
   public static final String CACHE_CONTROL = "Cache-Control";
@@ -62,6 +70,12 @@ public class FooControllerV1 {
    * @return ResponseEntity {@link ResponseEntity}
    * @throws ServiceException {@link ServiceException}
    */
+  @Operation(
+    summary = "Create a new foo.",
+    description = "Create a new foo.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string",implementation = String.class, allowableValues = {VND_FOO_SERVICE_V1}))},
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FooDTOV1.class)))
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "201", description = "Created - The request was successful, we created a new resource and the response body contains the representation."),
@@ -77,8 +91,7 @@ public class FooControllerV1 {
   )
   @PostMapping(
     path = "/fooes",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<Void> create(
     @Valid @RequestBody FooDTOV1 dto, BindingResult bindingResult,
@@ -102,6 +115,11 @@ public class FooControllerV1 {
    * @param id {@link Integer}
    * @return ResponseEntity {@link ResponseEntity}
    */
+  @Operation(
+    summary = "Get a foo by id.",
+    description = "Get a foo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))}
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "200", description = "OK - The request was successful and the response body contains the representation requested."),
@@ -116,8 +134,7 @@ public class FooControllerV1 {
   )
   @GetMapping(
     path = "/fooes/{id}",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<FooDTOV1> retrieveById(
     @PathVariable(value = "id") Long id) throws ServiceException {
@@ -144,6 +161,11 @@ public class FooControllerV1 {
    * @return
    * @throws ServiceException
    */
+  @Operation(
+    summary = "Get a list of fooes.",
+    description = "Get a list of fooes.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))}
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "200", description = "OK - The request was successful and the response body contains the representation requested."),
@@ -158,8 +180,7 @@ public class FooControllerV1 {
   )
   @GetMapping(
     path = "/fooes",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<List<FooDTOV1>> retrieve(
     @RequestParam(value = "fields", required = false) String fields,
@@ -198,6 +219,12 @@ public class FooControllerV1 {
    * @return Void {@link Void}
    * @throws ServiceException {@link ServiceException}
    */
+  @Operation(
+    summary = "Update a foo by id.",
+    description = "Update a foo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))},
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = FooDTOV1.class)))
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "200", description = "OK - The request was successful, we updated the resource and the response body contains the representation."),
@@ -213,8 +240,7 @@ public class FooControllerV1 {
   )
   @PutMapping(
     path = "/fooes/{id}",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<Void> update(
     @PathVariable(value = "id") Long id,
@@ -243,6 +269,12 @@ public class FooControllerV1 {
    * @return Void {@link Void}
    * @throws ServiceException {@link ServiceException}
    */
+  @Operation(
+    summary = "Patch a foo by id.",
+    description = "Patch a foo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {VND_FOO_SERVICE_V1}))},
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = APPLICATION_JSON_PATCH_VALUE, schema = @Schema(implementation = JsonPatch.class)))
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "200", description = "OK - The request was successful, we updated the resource and the response body contains the representation."),
@@ -260,8 +292,7 @@ public class FooControllerV1 {
   @PatchMapping(
     path = "/fooes/{id}",
     produces = {APPLICATION_JSON_VALUE},
-    consumes = {APPLICATION_JSON_PATCH_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    consumes = {APPLICATION_JSON_PATCH_VALUE}
   )
   public ResponseEntity<Void> patch(
     @PathVariable(value = "id") Long id,
@@ -290,7 +321,11 @@ public class FooControllerV1 {
    * @return Void {@link Void}
    * @throws ServiceException {@link ServiceException}
    */
-
+  @Operation(
+    summary = "Patch a foo by id.",
+    description = "Patch a foo by id.",
+    requestBody =  @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(mediaType = APPLICATION_JSON_MERGE_PATCH_VALUE, schema = @Schema(implementation = JsonMergePatch.class)))
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "200", description = "OK - The request was successful, we updated the resource and the response body contains the representation."),
@@ -307,8 +342,7 @@ public class FooControllerV1 {
   @PatchMapping(
     path = "/fooes/{id}",
     produces = {APPLICATION_JSON_VALUE},
-    consumes = {APPLICATION_JSON_MERGE_PATCH_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    consumes = {APPLICATION_JSON_MERGE_PATCH_VALUE}
   )
   public ResponseEntity<Void> patch(
     @PathVariable(value = "id") Long id,
@@ -334,7 +368,12 @@ public class FooControllerV1 {
    * @param id {@link Integer}
    * @return ResponseEntity {@link ResponseEntity}
    */
-
+  @Operation(
+    summary = "Delete a foo by id.",
+    description = "Delete a foo by id.",
+    parameters = {@Parameter(name= "accept-version", required = true, in = ParameterIn.HEADER,schema=@Schema(name = "accept-version", type = "string", allowableValues = {
+      VND_FOO_SERVICE_V1}))}
+  )
   @ApiResponses(
     value = {
       @ApiResponse(responseCode = "204", description = "OK - The request was successful; the resource was deleted."),
@@ -348,8 +387,7 @@ public class FooControllerV1 {
   )
   @DeleteMapping(
     path = "/fooes/{id}",
-    produces = {APPLICATION_JSON_VALUE},
-    headers = {ACCEPT_VERSION_VALUE}
+    produces = {APPLICATION_JSON_VALUE}
   )
   public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) throws ServiceException {
     //--
