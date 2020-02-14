@@ -22,11 +22,11 @@
         <jaspe.version>2.0.0-SNAPSHOT</jaspe.version>
 
         <!--https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies-->
-        <spring-boot-dependencies.version>2.1.9.RELEASE</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>2.2.4.RELEASE</spring-boot-dependencies.version>
         <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies -->
-        <spring-cloud-dependencies.version>Greenwich.SR3</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>Hoxton.SR1</spring-cloud-dependencies.version>
         <!--https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-contract-dependencies-->
-        <spring-cloud-contract-dependencies.version>2.0.1.RELEASE</spring-cloud-contract-dependencies.version>
+        <spring-cloud-contract-dependencies.version>2.2.1.RELEASE</spring-cloud-contract-dependencies.version>
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
         <springdoc-openapi-ui.version>1.2.30</springdoc-openapi-ui.version>
         <!--https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter-->
