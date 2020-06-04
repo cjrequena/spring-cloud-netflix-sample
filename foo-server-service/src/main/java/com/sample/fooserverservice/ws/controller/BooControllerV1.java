@@ -1,7 +1,6 @@
 package com.sample.fooserverservice.ws.controller;
 
 import com.sample.fooserverservice.dto.BooDTOV1;
-import com.sample.fooserverservice.dto.FooDTOV1;
 import com.sample.fooserverservice.exception.EErrorCode;
 import com.sample.fooserverservice.exception.ServiceException;
 import com.sample.fooserverservice.service.BooServiceV1;

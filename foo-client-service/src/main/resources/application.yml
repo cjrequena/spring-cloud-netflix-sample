@@ -152,3 +152,5 @@ zuul:
       #serviceId: foo-server-service
       url: http://localhost:9080/foo-server-service
       stripPrefix: true
+
+foo-server-service.url: localhost:9080
