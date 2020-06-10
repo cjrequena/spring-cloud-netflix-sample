@@ -82,6 +82,7 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
+        errorDecoder: com.sample.fooclientservice.exception.DefaultFeignErrorDecoder
 
 # RIBBON
 # You can configure the Hystrix timeout for individual routes using service.ribbon.* properties.

@@ -1,4 +1,4 @@
-package com.sample.fooserverservice.exception;
+package com.sample.fooclientservice.exception;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -6,10 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,10 +20,9 @@ import java.time.format.DateTimeFormatter;
  * @author cjrequena
  * @since JDK1.8
  */
-
 @ControllerAdvice
 @Log4j2
-public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+public class DefaultResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
   public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
@@ -36,9 +33,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
    */
   @ExceptionHandler({ServiceException.class})
   @ResponseBody
-  public ResponseEntity<Object> serviceException(ServiceException ex) {
+  public ResponseEntity<Object> handleServiceException(ServiceException ex) {
     ResponseEntity responseEntity;
     ErrorDTO errorDTO = new ErrorDTO();
+    errorDTO.setStatus(ex.getStatus().value());
     errorDTO.setErrorCode(ex.getErrorCode());
     errorDTO.setMessage(ex.getMessage());
     errorDTO.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
@@ -64,22 +62,4 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     log.error("Exception in service: " + errorDTO.toString());
     return responseEntity;
   }
-
-  /**
-   *
-   * @param ex
-   * @throws IOException
-   */
-  @ExceptionHandler(ControllerException.class)
-  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-  public ResponseEntity<Object> bindingException(ControllerException ex) {
-    ErrorDTO errorDTO = new ErrorDTO();
-    errorDTO.setErrorCode(ex.getErrorCode());
-    errorDTO.setMessage(ex.getMessage());
-    errorDTO.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));
-
-    errorDTO.setStatus(HttpStatus.BAD_REQUEST.value());
-    return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
-  }
-
 }
